@@ -5,8 +5,6 @@ import com.example.user.requestdto.RegistrationRequest;
 import com.example.user.responsedto.UserResponse;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-
 @Component
 public class UserMapper {
 
@@ -15,8 +13,6 @@ public class UserMapper {
                 .username(request.getUsername())
                 .email(request.getEmail())
                 .password(request.getPassword())
-                .createdAt(LocalDate.now())
-                .updatedAt(LocalDate.now())
                 .build();
     }
 

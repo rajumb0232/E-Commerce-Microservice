@@ -18,8 +18,9 @@ public class UserService {
     private final UserMapper userMapper;
 
     public UserResponse registerUser(RegistrationRequest request, UserRole role) {
-        User user = userRepository.save(userMapper.mapToNewUser(request));
+        User user = userMapper.mapToNewUser(request);
         user.setRole(role);
+        userRepository.save(user);
         return userMapper.mapToUserResponse(user);
     }
 
