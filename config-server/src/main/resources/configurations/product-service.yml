@@ -1,7 +1,7 @@
 spring:
   # DATASOURCE CONFIGURATION
   datasource:
-    url: jdbc:mysql://localhost:3306/user_mdb?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/product_service_db?createDatabaseIfNotExist=true
     username: root
     password: root
   jpa:
