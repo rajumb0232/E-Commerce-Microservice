@@ -1,4 +1,4 @@
-package com.example.product_service.responsedto;
+package com.example.product.responsedto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

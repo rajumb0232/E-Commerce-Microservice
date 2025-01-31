@@ -1,4 +1,4 @@
-package com.example.product_service.requestdto;
+package com.example.product.requestdto;
 
 import lombok.*;
 

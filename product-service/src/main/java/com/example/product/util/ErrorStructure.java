@@ -1,4 +1,4 @@
-package com.example.product_service.util;
+package com.example.product.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ErrorStructure<T> {
-    private String status;
+    private int status;
     private String message;
     private T rootCause;
 }
