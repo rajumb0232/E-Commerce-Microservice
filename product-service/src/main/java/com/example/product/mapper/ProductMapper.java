@@ -3,30 +3,36 @@ package com.example.product.mapper;
 import com.example.product.model.Product;
 import com.example.product.requestdto.ProductRequest;
 import com.example.product.responsedto.ProductResponse;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
-@Component
-public class ProductMapper {
-    public Product mapToProduct(ProductRequest productRequest) {
-        return Product.builder()
-                .title(productRequest.getTitle())
-                .description(productRequest.getDescription())
-                .price(productRequest.getPrice())
-                .stock(productRequest.getStock())
-                .category(productRequest.getCategory())
-                .build();
-    }
+/**
+ * Mapper interface for converting Product DTOs to Entities and vice versa.
+ */
+@Mapper(componentModel = "spring")
+public interface ProductMapper {
 
-    public ProductResponse mapToProductResponse(Product product) {
-        return ProductResponse.builder()
-                .id(product.getId())
-                .title(product.getTitle())
-                .description(product.getDescription())
-                .price(product.getPrice())
-                .stock(product.getStock())
-                .category(product.getCategory())
-                .createdAt(product.getCreatedAt())
-                .updatedAt(product.getUpdatedAt())
-                .build();
-    }
+    /**
+     * Converts a ProductRequest to a Product entity.
+     *
+     * @param productRequest the ProductRequest object containing product data
+     * @return the corresponding Product entity
+     */
+    Product mapToProduct(ProductRequest productRequest);
+
+    /**
+     * Updates an existing Product entity with data from a ProductRequest.
+     *
+     * @param productRequest the ProductRequest containing new product data
+     * @param product the Product entity to update
+     */
+    void mapToProduct(ProductRequest productRequest, @MappingTarget Product product);
+
+    /**
+     * Converts a Product entity to a ProductResponse DTO.
+     *
+     * @param product the Product entity to be converted
+     * @return the corresponding ProductResponse DTO
+     */
+    ProductResponse mapToProductResponse(Product product);
 }

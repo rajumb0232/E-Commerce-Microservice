@@ -38,4 +38,19 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.FOUND)
                 .body(responses);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long id, @RequestBody ProductRequest productRequest) {
+        ProductResponse productResponse = productService.updateProduct(id, productRequest);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(productResponse);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .build();
+    }
+
 }

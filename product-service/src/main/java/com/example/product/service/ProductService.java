@@ -8,6 +8,8 @@ import com.example.product.requestdto.ProductRequest;
 import com.example.product.responsedto.ProductResponse;
 import com.example.product.util.CustomPage;
 import lombok.AllArgsConstructor;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -49,5 +51,23 @@ public class ProductService {
                 .totalPages(page.getTotalPages())
                 .totalElements(page.getTotalElements())
                 .build();
+    }
+
+    public ProductResponse updateProduct(Long id, ProductRequest productRequest) {
+        return productRepository.findById(id)
+                .map(product -> {
+                    // mapping productRequest to existing product.
+                    productMapper.mapToProduct(productRequest, product);
+
+                    productRepository.save(product);
+                    return productMapper.mapToProductResponse(product);
+                })
+                .orElseThrow(() -> new ProductNotFoundByIdException("Product not found with ID: " + id));
+    }
+
+    public void deleteProduct(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundByIdException("Product not found with ID: " + id));
+        productRepository.delete(product);
     }
 }
