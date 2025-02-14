@@ -2,6 +2,7 @@ package com.example.user.controller;
 
 import com.example.user.enums.UserRole;
 import com.example.user.requestdto.RegistrationRequest;
+import com.example.user.requestdto.UserRequest;
 import com.example.user.responsedto.UserResponse;
 import com.example.user.service.UserService;
 import lombok.AllArgsConstructor;
@@ -42,4 +43,15 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.FOUND).body(response);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody UserRequest request) {
+        UserResponse response = userService.updateUser(id, request);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.ok("User deleted successfully");
+    }
 }
