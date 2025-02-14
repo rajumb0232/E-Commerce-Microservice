@@ -11,45 +11,36 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("${app.base-url}")
 @AllArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    private ResponseEntity<UserResponse> registerUser(RegistrationRequest request, UserRole role) {
-        UserResponse response = userService.registerUser(request, role);
+    @PostMapping("/register")
+    public ResponseEntity<UserResponse> registerUser(@RequestBody RegistrationRequest request) {
+        UserResponse response = userService.registerUser(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping
+    @GetMapping("/users")
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("Yes I'm Up - User Service");
     }
 
-    @PostMapping("/register/seller")
-    public ResponseEntity<UserResponse> registerSeller(@RequestBody RegistrationRequest request) {
-        return registerUser(request, UserRole.SELLER);
-    }
-
-    @PostMapping("/register/customer")
-    public ResponseEntity<UserResponse> registerCustomer(@RequestBody RegistrationRequest request) {
-        return registerUser(request, UserRole.CUSTOMER);
-    }
-
-    @GetMapping("/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<UserResponse> findUserById(@PathVariable Long id) {
         UserResponse response = userService.findUserById(id);
         return ResponseEntity.status(HttpStatus.FOUND).body(response);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/users/{id}")
     public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody UserRequest request) {
         UserResponse response = userService.updateUser(id, request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.ok("User deleted successfully");

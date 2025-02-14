@@ -11,27 +11,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("${app.base-url}")
 @AllArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
 
-    @PostMapping
+    @PostMapping("/products")
     public ResponseEntity<ProductResponse> addProduct(@RequestBody ProductRequest productRequest, @RequestParam Long sellerId) {
         ProductResponse productResponse = productService.addProduct(productRequest, sellerId);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(productResponse);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/products/{id}")
     public ResponseEntity<ProductResponse> getProductById(@PathVariable Long id) {
         ProductResponse productResponse = productService.getProductById(id);
         return ResponseEntity.status(HttpStatus.FOUND)
                 .body(productResponse);
     }
 
-    @GetMapping
+    @GetMapping("/products")
     public ResponseEntity<CustomPage<ProductResponse>> getAllProducts(@RequestParam int page, @RequestParam int size) {
         Page<ProductResponse> pageResponse = productService.getAllProducts(page, size);
         CustomPage<ProductResponse> responses = productService.convertToCustomPage(pageResponse);
@@ -39,7 +39,7 @@ public class ProductController {
                 .body(responses);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/products/{id}")
     public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long id, @RequestBody ProductRequest productRequest) {
         ProductResponse productResponse = productService.updateProduct(id, productRequest);
         return ResponseEntity.status(HttpStatus.OK)

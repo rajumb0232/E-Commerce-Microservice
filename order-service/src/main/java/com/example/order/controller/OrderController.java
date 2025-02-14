@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/order")
+@RequestMapping("${app.base-url}")
 public class OrderController {
     private OrderService orderService;
 

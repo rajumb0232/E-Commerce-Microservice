@@ -8,13 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/cart-items")
+@RequestMapping("${app.base-url}")
 @AllArgsConstructor
 public class CartItemController {
 
     private final CartItemService cartItemService;
 
-    @PostMapping("/{itemId}/products/{productId}")
+    @PostMapping("/cart-items/{itemId}/products/{productId}")
     public ResponseEntity<CartItem> createCartItem(@PathVariable Long itemId, @PathVariable Long productId, @RequestParam int quantity) {
         CartItem cartItem = cartItemService.createCartItem(itemId, productId, quantity);
         return ResponseEntity.status(HttpStatus.CREATED).body(cartItem);
