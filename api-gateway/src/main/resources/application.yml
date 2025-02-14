@@ -9,19 +9,19 @@ spring:
         - id: user-service
           uri: lb://user-service
           predicates:
-            - Path=/users/**
+            - Path=/api/v1/route-us/**
 
         # PRODUCT-SERVICE
         - id: product-service
           uri: lb://product-service
           predicates:
-            - Path=/products/**
+            - Path=/api/v1/route-ps/**
 
         # ORDER-SERVICE
         - id: order-service
           uri: lb://order-service
           predicates:
-            - Path=/orders/**
+            - Path=/api/v1/route-os/**
 
 eureka:
   client:
