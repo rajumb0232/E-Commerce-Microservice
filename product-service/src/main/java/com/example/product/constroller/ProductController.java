@@ -46,11 +46,17 @@ public class ProductController {
                 .body(productResponse);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/products/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .build();
+    }
+
+    @GetMapping("/products/{id}/availability")
+    public ResponseEntity<Boolean> checkProductAvailability(@PathVariable Long id, @RequestParam int quantity) {
+        boolean response = productService.checkProductAvailability(id, quantity);
+        return ResponseEntity.ok(response); // Placeholder for actual implementation
     }
 
 }

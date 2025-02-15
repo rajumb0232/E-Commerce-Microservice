@@ -70,4 +70,8 @@ public class ProductService {
                 .orElseThrow(() -> new ProductNotFoundByIdException("Product not found with ID: " + id));
         productRepository.delete(product);
     }
+
+    public boolean checkProductAvailability(Long id, int quantity) {
+        return productRepository.existsByIdAndStockGreaterThanEqual(id, quantity);
+    }
 }
