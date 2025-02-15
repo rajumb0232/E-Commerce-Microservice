@@ -16,6 +16,6 @@ public class CartItem {
     private Long id;
     // Reference to the product record
     private Long productId;
-    private Long quantity;
+    private int quantity;
     private boolean ordered;
 }
