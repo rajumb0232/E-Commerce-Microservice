@@ -15,3 +15,7 @@ spring:
 
 app:
   base-url: /api/v1/os
+  client:
+    product:
+      name: product-service
+      url: http://localhost:7002/api/v1/ps
