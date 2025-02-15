@@ -14,9 +14,9 @@ public class CartItemController {
 
     private final CartItemService cartItemService;
 
-    @PostMapping("/cart-items/{itemId}/products/{productId}")
-    public ResponseEntity<CartItem> createCartItem(@PathVariable Long itemId, @PathVariable Long productId, @RequestParam int quantity) {
-        CartItem cartItem = cartItemService.createCartItem(itemId, productId, quantity);
+    @PostMapping("/cart-items/products/{productId}")
+    public ResponseEntity<CartItem> createCartItem(@PathVariable Long productId, @RequestParam int quantity) {
+        CartItem cartItem = cartItemService.createCartItem(productId, quantity);
         return ResponseEntity.status(HttpStatus.CREATED).body(cartItem);
     }
 }
