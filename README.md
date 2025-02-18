@@ -1,12 +1,8 @@
 # E-Commerce Microservices Application
 
----
-
 This project is a simple e-commerce application built using a microservices architecture. It leverages Spring Boot and Spring Cloud to provide a scalable and maintainable solution. The application consists of multiple services, each responsible for a specific domain, and is organized as a polyrepo.
 
 ## Architecture Overview
-
----
 
 The application is composed of the following microservices:
 
@@ -27,8 +23,6 @@ The application is composed of the following microservices:
 
 ## Technologies Used
 
----
-
 - Java 21
 - Spring Boot 3.4.2
 - Spring Cloud
@@ -45,15 +39,11 @@ The application is composed of the following microservices:
 
 ### Prerequisites
 
----
-
 - Java 21 or later
 - Maven 3.11.0 or later+
 - MySQL database
 
 ### Installation
-
----
 
 1. **Clone the repository:**
 
