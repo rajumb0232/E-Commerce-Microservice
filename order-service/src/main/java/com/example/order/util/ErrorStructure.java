@@ -1,4 +1,4 @@
-package com.example.order.exception.util;
+package com.example.order.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -19,4 +19,16 @@ public class CartItemController {
         CartItem cartItem = cartItemService.createCartItem(productId, quantity);
         return ResponseEntity.status(HttpStatus.CREATED).body(cartItem);
     }
+
+    @PatchMapping("/cart-items/{cartItemId}")
+    public ResponseEntity<CartItem> updateCartItem(@PathVariable long cartItemId, @RequestParam int quantity) {
+        CartItem updatedCartItem = cartItemService.updateCartItem(cartItemId, quantity);
+        return ResponseEntity.ok(updatedCartItem);
+    }
+
+    @DeleteMapping("/cart-items/{id}")
+    public ResponseEntity<Void> deleteCartItem(@PathVariable Long id) {
+        cartItemService.deleteCartItem(id);
+        return ResponseEntity.noContent().build();
+    }
 }

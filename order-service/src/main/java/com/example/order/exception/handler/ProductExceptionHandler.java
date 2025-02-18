@@ -1,8 +1,8 @@
 package com.example.order.exception.handler;
 
 import com.example.order.exception.ProductOutOfStockException;
-import com.example.order.exception.util.ErrorStructure;
-import com.example.order.exception.util.RestResponseBuilder;
+import com.example.order.util.ErrorStructure;
+import com.example.order.util.RestResponseBuilder;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

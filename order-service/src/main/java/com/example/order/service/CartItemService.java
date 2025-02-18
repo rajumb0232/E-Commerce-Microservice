@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -64,5 +66,20 @@ public class CartItemService {
                 .ordered(false)
                 .build();
         return cartItemRepository.save(cartItem);
+    }
+
+    public CartItem updateCartItem(long cartItemId, int quantity) {
+        log.info("Updating cart item with id: {} to quantity: {}", cartItemId, quantity);
+        return cartItemRepository.findById(cartItemId)
+                .map(item -> updateExistingCartItem(item, quantity))
+                .orElseThrow(() -> new RuntimeException("Cart item not found with id: " + cartItemId));
+    }
+
+    public void deleteCartItem(Long id) {
+        log.info("Deleting cart item with id: {}", id);
+        CartItem cartItem = cartItemRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cart item not found with id: " + id));
+
+        cartItemRepository.delete(cartItem);
     }
 }

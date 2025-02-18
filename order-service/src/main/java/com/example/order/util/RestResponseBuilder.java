@@ -1,4 +1,4 @@
-package com.example.order.exception.util;
+package com.example.order.util;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
