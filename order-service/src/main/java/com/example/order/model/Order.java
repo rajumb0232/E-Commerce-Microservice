@@ -3,6 +3,7 @@ package com.example.order.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -24,13 +25,12 @@ public class Order {
     private List<CartItem> orderItems;
 
     private String paymentMethod;
-    private Double totalAmount;
-    private Double deliveryCost;
-    private Double totalPayableAmount;
+    private BigDecimal totalAmount;
+    private BigDecimal deliveryCost;
+    private BigDecimal totalPayableAmount;
 
     // Reference to the customer record
     private Long customerId;
     private String deliveryAddress;
-
 
 }

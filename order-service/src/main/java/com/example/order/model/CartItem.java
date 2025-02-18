@@ -19,7 +19,7 @@ public class CartItem {
     private int quantity;
     private boolean ordered;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
 }
