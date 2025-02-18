@@ -27,16 +27,14 @@ public class ProductController {
     @GetMapping("/products/{id}")
     public ResponseEntity<ProductResponse> getProductById(@PathVariable Long id) {
         ProductResponse productResponse = productService.getProductById(id);
-        return ResponseEntity.status(HttpStatus.FOUND)
-                .body(productResponse);
+        return ResponseEntity.ok(productResponse);
     }
 
     @GetMapping("/products")
     public ResponseEntity<CustomPage<ProductResponse>> getAllProducts(@RequestParam int page, @RequestParam int size) {
         Page<ProductResponse> pageResponse = productService.getAllProducts(page, size);
         CustomPage<ProductResponse> responses = productService.convertToCustomPage(pageResponse);
-        return ResponseEntity.status(HttpStatus.FOUND)
-                .body(responses);
+        return ResponseEntity.ok(responses);
     }
 
     @PutMapping("/products/{id}")
