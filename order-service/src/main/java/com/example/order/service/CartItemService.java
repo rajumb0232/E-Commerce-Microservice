@@ -1,7 +1,10 @@
 package com.example.order.service;
 
+import com.example.order.dto.response.CartItemResponse;
 import com.example.order.exception.ProductOutOfStockException;
 import com.example.order.integration.ProductClient;
+import com.example.order.integration.model.Product;
+import com.example.order.mapper.CartItemMapper;
 import com.example.order.model.CartItem;
 import com.example.order.repository.CartItemRepository;
 import jakarta.validation.constraints.Max;
@@ -23,10 +26,11 @@ public class CartItemService {
 
     private final ProductClient productClient;
     private final CartItemRepository cartItemRepository;
+    private final CartItemMapper cartItemMapper;
 
     @Transactional
 //    @Retryable(maxAttempts = 3, value = {ProductOutOfStockException.class})
-    public CartItem createCartItem(
+    public CartItemResponse createCartItem(
             @NonNull Long productId,
             @Min(value = 1, message = "Minimum quantity allowed is 1")
             @Max(value = 100, message = "Maximum quantity allowed is 100")
@@ -34,22 +38,27 @@ public class CartItemService {
 
         log.info("Attempting to create cart item for productId: {} with quantity: {}", productId, quantity);
 
-        validateProductAvailability(productId, quantity);
+        Product product = validateProductAvailabilityAndGet(productId, quantity);
 
-        return cartItemRepository.findByProductIdAndOrdered(productId, false)
+        CartItem cartItem = cartItemRepository.findByProductIdAndOrdered(productId, false)
                 .map(item -> updateExistingCartItem(item, quantity))
                 .orElseGet(() -> createNewCartItem(productId, quantity));
+
+        CartItemResponse cartItemResponse = cartItemMapper.mapToCartItemResponse(cartItem);
+        cartItemResponse.setProduct(product);
+        return cartItemResponse;
     }
 
-    private void validateProductAvailability(Long productId, int quantity) {
-            boolean isAvailable = productClient.checkProductAvailability(productId, quantity);
-            if (!isAvailable) {
-                log.error("Product {} may not exit or not available with requested quantity {}", productId, quantity);
-                throw new ProductOutOfStockException(
-                        String.format("Failed to add product ID %d with quantity %d to cart - insufficient stock or product may not exist.",
-                                productId, quantity));
-            }
-            log.info("Product availability confirmed for productId: {} with quantity: {}", productId, quantity);
+    private Product validateProductAvailabilityAndGet(Long productId, int quantity) {
+        Product product = productClient.getProductById(productId);
+        if (product == null || product.getStock() < quantity) {
+            log.error("Product {} may not exit or not available with requested quantity {}", productId, quantity);
+            throw new ProductOutOfStockException(
+                    String.format("Failed to add product ID %d with quantity %d to cart - insufficient stock or product may not exist.",
+                            productId, quantity));
+        }
+        log.info("Product availability confirmed for productId: {} with quantity: {}", productId, quantity);
+        return product;
     }
 
     private CartItem updateExistingCartItem(CartItem item, int quantity) {
