@@ -40,7 +40,7 @@ public class CartItemService {
 
         Product product = validateProductAvailabilityAndGet(productId, quantity);
 
-        CartItem cartItem = cartItemRepository.findByProductIdAndOrdered(productId, false)
+        CartItem cartItem = cartItemRepository.findByProductIdAndIsOrdered(productId, false)
                 .map(item -> updateExistingCartItem(item, quantity))
                 .orElseGet(() -> createNewCartItem(productId, quantity));
 
@@ -72,7 +72,7 @@ public class CartItemService {
         CartItem cartItem = CartItem.builder()
                 .productId(productId)
                 .quantity(quantity)
-                .ordered(false)
+                .isOrdered(false)
                 .build();
         return cartItemRepository.save(cartItem);
     }

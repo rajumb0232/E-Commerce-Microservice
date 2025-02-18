@@ -65,7 +65,7 @@ public class OrderService {
 
     private List<CartItem> getUnOrderedCartItems() {
         log.info("Fetching un-ordered cart items...");
-        List<CartItem> items = cartItemRepository.findAllByOrdered(false);
+        List<CartItem> items = cartItemRepository.findAllByIsOrdered(false);
         if (items.isEmpty()) {
             log.error("No un-ordered cart items found.");
             throw new UnorderedCartItemsNotFoundException("No un-ordered cart items found.");
@@ -120,7 +120,6 @@ public class OrderService {
     private Order createOrderObject(BigDecimal totalAmount, BigDecimal deliveryCost, Long customerId, List<CartItem> cartItems) {
         log.debug("Creating order object...");
         return Order.builder()
-                .orderDate(LocalDate.now())
                 .status("Pending")
                 .totalAmount(totalAmount)
                 .paymentMethod("Credit Card")

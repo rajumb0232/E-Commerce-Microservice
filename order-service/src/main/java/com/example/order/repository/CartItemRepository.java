@@ -15,7 +15,7 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
      * @param status    The ordered status of the cart item.
      * @return Optional containing the cart item if found, otherwise null.
      */
-    Optional<CartItem> findByProductIdAndOrdered(Long productId, boolean status);
+    Optional<CartItem> findByProductIdAndIsOrdered(Long productId, boolean status);
 
     /**
      * Queries to find all cart items by their ordered status.
@@ -23,5 +23,5 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
      * @param status The ordered status of the cart items.
      * @return List containing all cart items with the specified ordered status.
      */
-    List<CartItem> findAllByOrdered(boolean status);
+    List<CartItem> findAllByIsOrdered(boolean status);
 }

@@ -7,6 +7,6 @@ import lombok.Data;
 public class CartItemResponse {
     private Long id;
     private int quantity;
-    private boolean ordered;
+    private boolean isOrdered;
     private Product product;
 }
