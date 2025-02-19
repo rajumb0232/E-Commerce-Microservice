@@ -7,6 +7,7 @@ import com.example.order.integration.model.Product;
 import com.example.order.mapper.CartItemMapper;
 import com.example.order.model.CartItem;
 import com.example.order.repository.CartItemRepository;
+import feign.FeignException;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
@@ -50,7 +51,7 @@ public class CartItemService {
     }
 
     private Product validateProductAvailabilityAndGet(Long productId, int quantity) {
-        Product product = productClient.getProductById(productId);
+        Product product = getProduct(productId);
         if (product == null || product.getStock() < quantity) {
             log.error("Product {} may not exit or not available with requested quantity {}", productId, quantity);
             throw new ProductOutOfStockException(
@@ -58,6 +59,23 @@ public class CartItemService {
                             productId, quantity));
         }
         log.info("Product availability confirmed for productId: {} with quantity: {}", productId, quantity);
+        return product;
+    }
+
+    // TODO: needs to be updated to handle all the type of exceptions and can be globalized for better handling and reusability across multiple class.
+
+    private Product getProduct(long productId) {
+        Product product = null;
+        try {
+            product = productClient.getProductById(productId);
+        } catch (FeignException e) {
+            if(e.status() == 404) {
+                log.error("Product not found with id: {}", productId);
+                throw new RuntimeException("Product not found with id: " + productId);
+            }
+            log.error("Failed to retrieve product with id: {}", productId);
+            throw new RuntimeException("Failed to retrieve product with id: " + productId);
+        }
         return product;
     }
 

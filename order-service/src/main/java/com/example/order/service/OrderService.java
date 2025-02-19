@@ -2,6 +2,7 @@ package com.example.order.service;
 
 import com.example.order.exception.ProductOutOfStockException;
 import com.example.order.exception.UnorderedCartItemsNotFoundException;
+import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,12 +85,22 @@ public class OrderService {
         log.debug("Mapping cart items to CartItemResponse objects...");
         return cartItems.stream()
                 .map(item -> {
-                    Product product = productClient.getProductById(item.getProductId());
+                    var product = getProduct(item);
                     CartItemResponse response = cartItemMapper.mapToCartItemResponse(item);
                     response.setProduct(product);
                     return response;
                 })
                 .toList();
+    }
+
+    private Product getProduct(CartItem item) {
+        Product product = null;
+        try {
+            product = productClient.getProductById(item.getProductId());
+        } catch (FeignException e) {
+            System.out.println(e.getMessage());
+        }
+        return product;
     }
 
     private void UpdateCartItemAsOrdered(List<CartItem> cartItems, Order order) {
@@ -105,7 +116,7 @@ public class OrderService {
         log.debug("Extracting total amount from cart items...");
         log.debug("Validating cart items for stock availability...");
         return cartItems.stream().map(item -> {
-            Product product = productClient.getProductById(item.getProductId());
+            var product = getProduct(item);
 
             if (product == null || product.getStock() < item.getQuantity()) {
                 log.error("Failed to create order - insufficient stock");
