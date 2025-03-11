@@ -33,7 +33,7 @@ public class ClaimGen {
      *
      * @return a new instance of ClaimBuilder
      */
-    public static ClaimBuilder createClaimBuilder() {
+    public static ClaimBuilder builder() {
         return new ClaimBuilder();
     }
 

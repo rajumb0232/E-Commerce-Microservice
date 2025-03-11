@@ -4,6 +4,8 @@ import com.example.user.dto.request.LoginRequest;
 import com.example.user.dto.response.AuthResponse;
 import com.example.user.service.AuthService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +21,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> loginUser(@RequestBody LoginRequest request) {
-        return null;
+        AuthResponse response = authService.authenticate(request);
+        HttpHeaders headers = authService.getLoginCredentials(response);
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(response);
     }
 }

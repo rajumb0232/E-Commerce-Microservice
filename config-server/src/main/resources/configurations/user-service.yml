@@ -21,5 +21,9 @@ app:
     public-key:
       path: C:\1WORKSPACE\PROJECTS\BACKEND\MICROSERVICES\Microservice_Demo\public_key.pem
     token-validity:
-      access: 3600000
-      refresh: 7200000
+      access-validity: 3600000
+      refresh-validity: 7200000
+    cookie:
+      domain: localhost
+      secure: false
+      same-site: Lax

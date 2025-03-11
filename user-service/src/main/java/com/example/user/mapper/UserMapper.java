@@ -1,5 +1,6 @@
 package com.example.user.mapper;
 
+import com.example.user.dto.response.AuthResponse;
 import com.example.user.model.User;
 import com.example.user.dto.request.RegistrationRequest;
 import com.example.user.dto.request.UserRequest;
@@ -36,4 +37,12 @@ public interface UserMapper {
      * @return the corresponding UserResponse
      */
     UserResponse mapToUserResponse(User user);
+
+    /**
+     * Converts a User to an AuthResponse.
+     *
+     * @param user the User data
+     * @return the corresponding AuthResponse
+     */
+    AuthResponse mapToAuthResponse(User user);
 }
