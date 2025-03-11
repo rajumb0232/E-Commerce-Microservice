@@ -1,9 +1,9 @@
 package com.example.user.mapper;
 
 import com.example.user.model.User;
-import com.example.user.requestdto.RegistrationRequest;
-import com.example.user.requestdto.UserRequest;
-import com.example.user.responsedto.UserResponse;
+import com.example.user.dto.request.RegistrationRequest;
+import com.example.user.dto.request.UserRequest;
+import com.example.user.dto.response.UserResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 

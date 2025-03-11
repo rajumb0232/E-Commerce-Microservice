@@ -1,4 +1,4 @@
-package com.example.user.requestdto;
+package com.example.user.dto.request;
 
 import com.example.user.enums.UserRole;
 import lombok.Getter;

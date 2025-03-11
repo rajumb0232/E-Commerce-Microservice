@@ -1,9 +1,8 @@
 package com.example.user.controller;
 
-import com.example.user.enums.UserRole;
-import com.example.user.requestdto.RegistrationRequest;
-import com.example.user.requestdto.UserRequest;
-import com.example.user.responsedto.UserResponse;
+import com.example.user.dto.request.RegistrationRequest;
+import com.example.user.dto.request.UserRequest;
+import com.example.user.dto.response.UserResponse;
 import com.example.user.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

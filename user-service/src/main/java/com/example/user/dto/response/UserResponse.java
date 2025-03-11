@@ -1,4 +1,4 @@
-package com.example.user.responsedto;
+package com.example.user.dto.response;
 
 import com.example.user.enums.UserRole;
 import lombok.AllArgsConstructor;
