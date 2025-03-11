@@ -17,7 +17,9 @@ app:
   base-url: /api/v1/us
   security:
     private-key:
-      path:
+      path: C:\1WORKSPACE\PROJECTS\BACKEND\MICROSERVICES\Microservice_Demo\private_key.pem
+    public-key:
+      path: C:\1WORKSPACE\PROJECTS\BACKEND\MICROSERVICES\Microservice_Demo\public_key.pem
     token-validity:
       access: 3600000
       refresh: 7200000
