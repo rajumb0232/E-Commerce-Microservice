@@ -39,6 +39,7 @@ public class TokenGenerator {
             @Value("${app.security.token-validity.refresh}") Long refreshValidity) {
         this.accessValidity = accessValidity;
         this.refreshValidity = refreshValidity;
+        log.info("Loading private key from: {}", filePath);
         privateKey = KeyLoader.loadPrivateKey(filePath);
     }
 
