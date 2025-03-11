@@ -8,6 +8,7 @@ import com.example.user.dto.request.UserRequest;
 import com.example.user.dto.response.UserResponse;
 import com.example.user.respository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,11 +17,21 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     public UserResponse registerUser(RegistrationRequest request) {
         User user = userMapper.mapToNewUser(request);
+        encodeUserPassword(user);
         userRepository.save(user);
         return userMapper.mapToUserResponse(user);
+    }
+
+    /**
+     * Encodes the user's password using the provided password encoder.
+     * @param user the user to encode the password for
+     */
+    private void encodeUserPassword(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
     }
 
     public UserResponse findUserById(Long id) {

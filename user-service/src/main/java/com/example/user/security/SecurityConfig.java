@@ -40,7 +40,10 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(env.getBaseUrl() + "/login").permitAll()
+                        .requestMatchers(
+                                env.getBaseUrl() + "/login",
+                                env.getBaseUrl() + "/register")
+                        .permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();

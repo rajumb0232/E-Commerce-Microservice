@@ -28,14 +28,14 @@ public class UserDetailServiceImpl implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username)
+        return userRepository.findByEmail(username)
                 .map(user -> {
-                    log.info("Successful login for username: {}", username);
+                    log.info("Successful login for email: {}", username);
                     return createUser(user);
                 })
                 .orElseThrow(() -> {
-                    log.error("Failed login attempt for username: {}", username);
-                    return new UsernameNotFoundException("User not found with username: " + username);
+                    log.error("Failed login attempt for email: {}", username);
+                    return new UsernameNotFoundException("User not found with email: " + username);
                 });
     }
 
@@ -47,7 +47,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
      */
     private UserDetails createUser(User user) {
         return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getUsername())
+                .username(user.getEmail())
                 .password(user.getPassword())
                 .roles(user.getRole().name())
                 .build();

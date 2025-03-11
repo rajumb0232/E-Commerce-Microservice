@@ -3,6 +3,7 @@ package com.example.user.controller;
 import com.example.user.dto.request.LoginRequest;
 import com.example.user.dto.response.AuthResponse;
 import com.example.user.service.AuthService;
+import com.example.user.service.TokenGenerationService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,11 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+    private final TokenGenerationService tokenGenerationService;
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> loginUser(@RequestBody LoginRequest request) {
         AuthResponse response = authService.authenticate(request);
-        HttpHeaders headers = authService.getLoginCredentials(response);
+        HttpHeaders headers = tokenGenerationService.getLoginCredentials(response);
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(response);
     }
 }
