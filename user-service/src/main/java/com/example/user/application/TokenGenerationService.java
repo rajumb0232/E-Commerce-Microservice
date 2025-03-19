@@ -10,6 +10,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
 
@@ -35,8 +37,15 @@ public class TokenGenerationService {
         HttpHeaders headers = new HttpHeaders();
 
         TokenData tokenData = getTokenData(authRecord);
-        generateAndAddAccessTokenAsCookie(tokenData, headers);
-        generateAndAddRefreshTokenAsCookie(tokenData, headers);
+        String accessToken = generateToken(tokenData, TOKEN_TYPE_ACCESS);
+        String refreshToken = generateToken(tokenData, TOKEN_TYPE_REFRESH);
+
+        // Adding cookies to the headers
+        long atCookieAge = getMaxAgeSeconds(tokenData.issueAt, tokenData.accessExpiration);
+        headers.add(HttpHeaders.SET_COOKIE, generateCookie(TOKEN_TYPE_ACCESS, accessToken, atCookieAge));
+
+        long rtCookieAge = getMaxAgeSeconds(tokenData.issueAt, tokenData.refreshExpiration);
+        headers.add(HttpHeaders.SET_COOKIE, generateCookie(TOKEN_TYPE_REFRESH, refreshToken, rtCookieAge));
 
         return headers;
     }
@@ -44,7 +53,9 @@ public class TokenGenerationService {
     /**
      * Record to store token-related data, including claims and expiration details.
      */
-    public record TokenData(Map<String, Object> claims, Date issueDateTime, Date accessExpiration, Date refreshExpiration) { }
+    public record TokenData(Map<String, Object> claims, Instant issueAt, Instant accessExpiration,
+                            Instant refreshExpiration) {
+    }
 
     /**
      * Creates token data with claims and expiration details.
@@ -53,9 +64,9 @@ public class TokenGenerationService {
      * @return TokenData object containing token claims and expiration details
      */
     private TokenData getTokenData(AuthRecord authRecord) {
-        Date issueDateTime = new Date(authRecord.issueAt());
-        Date accessExpiration = new Date(authRecord.accessExpiration());
-        Date refreshExpiration = new Date(authRecord.refreshExpiration());
+        Instant issueAt = Instant.ofEpochMilli(authRecord.issueAt());
+        Instant accessExpiration = Instant.ofEpochMilli(authRecord.accessExpiration());
+        Instant refreshExpiration = Instant.ofEpochMilli(authRecord.refreshExpiration());
 
         Map<String, Object> claims = ClaimGen.builder()
                 .addClaim(ClaimGen.USERNAME, authRecord.username())
@@ -63,31 +74,21 @@ public class TokenGenerationService {
                 .addClaim(ClaimGen.ROLE, authRecord.role())
                 .build();
 
-        return new TokenData(claims, issueDateTime, accessExpiration, refreshExpiration);
+        return new TokenData(claims, issueAt, accessExpiration, refreshExpiration);
     }
 
     /**
-     * Generates and adds the refresh token as a cookie to the response headers.
+     * Generates a JWT token based on the provided token data and token type.
      *
-     * @param tokenData the {@link TokenData} record containing token claims and expiration details
-     * @param headers the {@link HttpHeaders} to which the cookies have to be added
+     * @param tokenData the token data containing claims and expiration details
+     * @param tokenType the type of token (access or refresh)
+     * @return the generated JWT token as a compact string
      */
-    public void generateAndAddRefreshTokenAsCookie(TokenData tokenData, HttpHeaders headers) {
-        String refreshToken = tokenGenerator.generateToken(tokenData.claims, tokenData.issueDateTime, tokenData.refreshExpiration);
-        var maxAgeSeconds = getMaxAgeSeconds(tokenData.issueDateTime(), tokenData.refreshExpiration);
-        headers.add(HttpHeaders.SET_COOKIE, generateCookie(TOKEN_TYPE_REFRESH, refreshToken, maxAgeSeconds));
-    }
-
-    /**
-     * Generates and adds the access token as a cookie to the response headers.
-     *
-     * @param tokenData the {@link TokenData} record containing token claims and expiration details
-     * @param headers the {@link HttpHeaders} to which the cookies have to be added
-     */
-    public void generateAndAddAccessTokenAsCookie(TokenData tokenData, HttpHeaders headers) {
-        String accessToken = tokenGenerator.generateToken(tokenData.claims, tokenData.issueDateTime, tokenData.accessExpiration);
-        var maxAgeSeconds = getMaxAgeSeconds(tokenData.issueDateTime(), tokenData.accessExpiration);
-        headers.add(HttpHeaders.SET_COOKIE, generateCookie(TOKEN_TYPE_ACCESS, accessToken, maxAgeSeconds));
+    private String generateToken(TokenData tokenData, String tokenType) {
+        return tokenGenerator.generateToken(
+                tokenData.claims,
+                Date.from(tokenData.issueAt),
+                tokenType.equals(TOKEN_TYPE_ACCESS) ? Date.from(tokenData.accessExpiration) : Date.from(tokenData.refreshExpiration));
     }
 
     /**
@@ -97,10 +98,8 @@ public class TokenGenerationService {
      * @param expiration    the expiration date of the token
      * @return the max age in seconds
      */
-    private static long getMaxAgeSeconds(Date issueDateTime, Date expiration) {
-        long currentTimeMillis = System.currentTimeMillis();
-        long bufferTime = currentTimeMillis - issueDateTime.getTime();
-        return (expiration.getTime() - issueDateTime.getTime() - bufferTime) / 1000;
+    private static long getMaxAgeSeconds(Instant issueDateTime, Instant expiration) {
+        return Duration.between(issueDateTime, expiration).toSeconds();
     }
 
     /**

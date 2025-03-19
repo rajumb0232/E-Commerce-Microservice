@@ -15,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Date;
 
 /**
@@ -29,8 +30,6 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
-    private final UserMapper userMapper;
-    private final TokenGenerationService tokenGenerationService;
     private final Env env;
 
     /**
@@ -58,10 +57,9 @@ public class AuthService {
      * @return an AuthRecord containing user details and token metadata
      */
     private AuthRecord generateAuthRecord(User user) {
-        long nowMillis = System.currentTimeMillis();
-        Date issueDateTime = new Date(nowMillis);
-        Date accessExpiration = new Date(nowMillis + env.getSecurity().getTokenValidity().getAccessValidity());
-        Date refreshExpiration = new Date(nowMillis + env.getSecurity().getTokenValidity().getRefreshValidity());
+        Instant now = Instant.now();
+        Instant accessExpiration = now.plusSeconds(env.getSecurity().getTokenValidity().getAccessValidity());
+        Instant refreshExpiration = now.plusSeconds(env.getSecurity().getTokenValidity().getRefreshValidity());
 
         return new AuthRecord(
                 user.getUserId(),
@@ -69,9 +67,9 @@ public class AuthService {
                 user.getEmail(),
                 user.getRole(),
                 true,
-                issueDateTime.getTime(),
-                accessExpiration.getTime(),
-                refreshExpiration.getTime()
+                now.toEpochMilli(),
+                accessExpiration.toEpochMilli(),
+                refreshExpiration.toEpochMilli()
         );
     }
 
