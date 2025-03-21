@@ -4,7 +4,6 @@ import com.example.user.infrastructure.config.Env;
 import com.example.user.security.jwt.TokenGenerator;
 import com.example.user.security.jwt.TokenType;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +14,6 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
-@Slf4j
 public class TokenGenerationServiceHelper {
 
     private final Env env;
@@ -23,13 +21,17 @@ public class TokenGenerationServiceHelper {
 
     /**
      * Creates token data with claims and expiration details.
+     * <p>
+     * The method automatically decides issueTime based on the token type and expiration date. <br>
+     * The method also generates a cookie string with the specified name, value (which is the JWT token),
+     * and along with the calculated max age.
      *
      * @param tokenType      the type of token (access or refresh)
      * @param claims         a map of claims to include in the token payload
      * @param shouldExpireAt the token's expiration date as {@link Instant}
      * @return TokenData object containing token claims and expiration details
      */
-    public String generateToken(TokenType tokenType, Map<String, Object> claims, Instant shouldExpireAt) {
+    public String issueTokenAsCookie(TokenType tokenType, Map<String, Object> claims, Instant shouldExpireAt) {
         var issueAt = calculateIssueTime(tokenType, shouldExpireAt);
 
         var token = tokenGenerator.generateToken(
@@ -41,32 +43,30 @@ public class TokenGenerationServiceHelper {
     }
 
     /**
-     * Calculates the issue date for the token based on the token type and expiration date.
+     * Calculates the issue date by subtracting the respective token validity from the expiration date.
+     * <p>
+     * Subtracting the validity of the token from the expiration ensures the right issue time.
      *
      * @param tokenType      the type of token (access or refresh)
      * @param shouldExpireAt the expiration date of the token
      * @return the issue date as {@link Instant}
      */
     private Instant calculateIssueTime(TokenType tokenType, Instant shouldExpireAt) {
-        Instant issueAt;
-
-        switch (tokenType) {
-            case ACCESS ->
-                    issueAt = shouldExpireAt.minusSeconds(env.getSecurity().getTokenValidity().getAccessValidity());
-            case REFRESH ->
-                    issueAt = shouldExpireAt.minusSeconds(env.getSecurity().getTokenValidity().getRefreshValidity());
-            default -> throw new IllegalArgumentException("Invalid token type: " + tokenType);
-        }
-        return issueAt;
+        return tokenType.equals(TokenType.ACCESS)
+                ? shouldExpireAt.minusSeconds(env.getSecurity().getTokenValidity().getAccessValidity())
+                : shouldExpireAt.minusSeconds(env.getSecurity().getTokenValidity().getRefreshValidity());
     }
 
     /**
-     * Calculates the maximum age for the token cookie.
+     * Generates a cookie string with the specified name, value, and max age.
+     * <p>
+     * The method calculates the max age in seconds based on the expiration date
+     * and sets the cookie accordingly.
      *
      * @param tokenType  the type of token (access or refresh)
      * @param expiration the expiration date of the token
      * @param token      the token to be set as the cookie value
-     * @return the max age in seconds
+     * @return the generated cookie string suitable for the Set-Cookie header
      */
     private String generateCookie(TokenType tokenType, Instant expiration, String token) {
         var maxAge = Duration.between(Instant.now(), expiration).toSeconds();
@@ -82,7 +82,6 @@ public class TokenGenerationServiceHelper {
      * @return the cookie string suitable for the Set-Cookie header
      */
     private String generateCookie(String name, String value, long maxAgeSec) {
-        log.info("Generating cookie: {}", name);
         return ResponseCookie.from(name, value)
                 .maxAge(maxAgeSec)
                 .httpOnly(true)

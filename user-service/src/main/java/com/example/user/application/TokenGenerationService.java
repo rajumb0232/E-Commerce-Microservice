@@ -31,8 +31,8 @@ public class TokenGenerationService {
 
         Map<String, Object> claims = createClaims(authRecord);
 
-        String accessToken = tokenGenerationServiceHelper.generateToken(TokenType.ACCESS, claims, Instant.ofEpochMilli(authRecord.accessExpiration()));
-        String refreshToken = tokenGenerationServiceHelper.generateToken(TokenType.REFRESH, claims, Instant.ofEpochMilli(authRecord.refreshExpiration()));
+        String accessToken = tokenGenerationServiceHelper.issueTokenAsCookie(TokenType.ACCESS, claims, Instant.ofEpochMilli(authRecord.accessExpiration()));
+        String refreshToken = tokenGenerationServiceHelper.issueTokenAsCookie(TokenType.REFRESH, claims, Instant.ofEpochMilli(authRecord.refreshExpiration()));
 
         // Adding cookies to the headers
         headers.add(HttpHeaders.SET_COOKIE, accessToken);
