@@ -30,7 +30,7 @@ public class TokenGenerationServiceHelper {
      * @return TokenData object containing token claims and expiration details
      */
     public String generateToken(TokenType tokenType, Map<String, Object> claims, Instant shouldExpireAt) {
-        var issueAt = calculateIssueAt(tokenType, shouldExpireAt);
+        var issueAt = calculateIssueTime(tokenType, shouldExpireAt);
 
         var token = tokenGenerator.generateToken(
                 claims,
@@ -47,7 +47,7 @@ public class TokenGenerationServiceHelper {
      * @param shouldExpireAt the expiration date of the token
      * @return the issue date as {@link Instant}
      */
-    private Instant calculateIssueAt(TokenType tokenType, Instant shouldExpireAt) {
+    private Instant calculateIssueTime(TokenType tokenType, Instant shouldExpireAt) {
         Instant issueAt;
 
         switch (tokenType) {
