@@ -1,6 +1,6 @@
 package com.example.user.application;
 
-import com.example.user.api.dto.AuthRecord;
+import com.example.user.application.dto.AuthRecord;
 import com.example.user.security.jwt.ClaimGen;
 import com.example.user.security.jwt.TokenType;
 import com.example.user.security.service.TokenGenerationServiceHelper;

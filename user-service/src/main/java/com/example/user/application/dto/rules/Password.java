@@ -1,4 +1,4 @@
-package com.example.user.api.dto.rules;
+package com.example.user.application.dto.rules;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.constraints.NotBlank;
@@ -9,16 +9,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@NotBlank(message = "Email is required")
-@jakarta.validation.constraints.Email(message = "Email should be valid")
+@NotBlank(message = "Password is required")
 @Pattern(
-        regexp = "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$",
-        message = "Email format is invalid"
+        regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$",
+        message = "Password must be at least 8 characters long, with at least one letter and one number"
 )
 @Constraint(validatedBy = {})
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Email {
+public @interface Password {
     String message() default "Invalid username";
     Class<?>[] groups() default {};
     Class<? extends jakarta.validation.Payload>[] payload() default {};

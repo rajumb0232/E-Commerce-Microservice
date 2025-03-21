@@ -1,7 +1,7 @@
 package com.example.user.api;
 
-import com.example.user.api.dto.AuthRecord;
-import com.example.user.api.dto.LoginRequest;
+import com.example.user.application.dto.AuthRecord;
+import com.example.user.application.dto.LoginRequest;
 import com.example.user.application.AuthService;
 import com.example.user.application.TokenGenerationService;
 import jakarta.validation.Valid;

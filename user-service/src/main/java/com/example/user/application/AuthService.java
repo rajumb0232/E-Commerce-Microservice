@@ -1,22 +1,19 @@
 package com.example.user.application;
 
-import com.example.user.api.dto.AuthRecord;
-import com.example.user.api.dto.LoginRequest;
+import com.example.user.application.dto.AuthRecord;
+import com.example.user.application.dto.LoginRequest;
 import com.example.user.domain.exception.InvalidCredentialsException;
 import com.example.user.infrastructure.config.Env;
-import com.example.user.infrastructure.mapping.UserMapper;
 import com.example.user.domain.model.User;
 import com.example.user.infrastructure.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.Date;
 
 /**
  * Service class responsible for handling authentication operations.

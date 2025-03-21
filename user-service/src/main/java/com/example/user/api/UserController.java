@@ -1,8 +1,8 @@
 package com.example.user.api;
 
-import com.example.user.api.dto.RegistrationRequest;
-import com.example.user.api.dto.UserRequest;
-import com.example.user.api.dto.UserResponse;
+import com.example.user.application.dto.RegistrationRequest;
+import com.example.user.application.dto.UserRequest;
+import com.example.user.application.dto.UserResponse;
 import com.example.user.application.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

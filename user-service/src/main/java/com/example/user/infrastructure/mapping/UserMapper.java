@@ -1,8 +1,7 @@
 package com.example.user.infrastructure.mapping;
 
-import com.example.user.api.dto.AuthRecord;
 import com.example.user.domain.model.User;
-import com.example.user.api.dto.UserResponse;
+import com.example.user.application.dto.UserResponse;
 import org.springframework.stereotype.Component;
 
 /**

@@ -1,7 +1,7 @@
-package com.example.user.api.dto;
+package com.example.user.application.dto;
 
-import com.example.user.api.dto.rules.Password;
-import com.example.user.api.dto.rules.Username;
+import com.example.user.application.dto.rules.Password;
+import com.example.user.application.dto.rules.Username;
 import com.example.user.domain.model.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;

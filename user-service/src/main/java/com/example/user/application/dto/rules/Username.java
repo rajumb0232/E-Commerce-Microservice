@@ -1,4 +1,4 @@
-package com.example.user.api.dto.rules;
+package com.example.user.application.dto.rules;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.constraints.NotBlank;
