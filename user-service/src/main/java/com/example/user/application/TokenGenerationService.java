@@ -17,9 +17,6 @@ import java.util.Map;
 @Slf4j
 public class TokenGenerationService {
 
-    public static final String TOKEN_TYPE_ACCESS = "at";
-    public static final String TOKEN_TYPE_REFRESH = "rt";
-
     private final TokenGenerationServiceHelper tokenGenerationServiceHelper;
 
     /**
