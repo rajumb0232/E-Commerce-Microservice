@@ -1,4 +1,4 @@
-package com.example.user.infrastructure.mapping;
+package com.example.user.application.mapping;
 
 import com.example.user.domain.model.User;
 import com.example.user.application.dto.UserResponse;

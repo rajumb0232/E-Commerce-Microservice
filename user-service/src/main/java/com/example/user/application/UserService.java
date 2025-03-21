@@ -1,7 +1,7 @@
 package com.example.user.application;
 
 import com.example.user.domain.exception.UserNotFoundByIdException;
-import com.example.user.infrastructure.mapping.UserMapper;
+import com.example.user.application.mapping.UserMapper;
 import com.example.user.domain.model.User;
 import com.example.user.application.dto.RegistrationRequest;
 import com.example.user.application.dto.UserRequest;
