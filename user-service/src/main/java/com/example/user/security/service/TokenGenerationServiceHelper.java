@@ -4,7 +4,6 @@ import com.example.user.infrastructure.config.Env;
 import com.example.user.security.jwt.TokenGenerator;
 import com.example.user.security.jwt.TokenType;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -18,6 +17,7 @@ public class TokenGenerationServiceHelper {
 
     private final Env env;
     private final TokenGenerator tokenGenerator;
+    private final CookieGenerator cookieGenerator;
 
     /**
      * Creates token data with claims and expiration details.
@@ -70,26 +70,6 @@ public class TokenGenerationServiceHelper {
      */
     private String generateCookie(TokenType tokenType, Instant expiration, String token) {
         var maxAge = Duration.between(Instant.now(), expiration).toSeconds();
-        return this.generateCookie(tokenType.type(), token, maxAge);
-    }
-
-    /**
-     * Generates a cookie string with the specified name, value, and max age.
-     *
-     * @param name      the name of the cookie
-     * @param value     the value of the cookie (typically a JWT token)
-     * @param maxAgeSec the maximum age of the cookie in seconds
-     * @return the cookie string suitable for the Set-Cookie header
-     */
-    private String generateCookie(String name, String value, long maxAgeSec) {
-        return ResponseCookie.from(name, value)
-                .maxAge(maxAgeSec)
-                .httpOnly(true)
-                .secure(env.getSecurity().getCookie().getSecure())
-                .domain(env.getSecurity().getCookie().getDomain())
-                .sameSite(env.getSecurity().getCookie().getSameSite())
-                .path("/")
-                .build()
-                .toString();
+        return cookieGenerator.generateCookie(tokenType.type(), token, maxAge);
     }
 }
