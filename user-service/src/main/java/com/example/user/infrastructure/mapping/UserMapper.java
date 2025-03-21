@@ -18,16 +18,13 @@ public class UserMapper {
      * @return the corresponding UserResponse
      */
     public UserResponse mapToUserResponse(User user) {
-
-    }
-
-    /**
-     * Converts a User to an AuthRecord.
-     *
-     * @param user the User data
-     * @return the corresponding AuthRecord
-     */
-    public AuthRecord mapToAuthResponse(User user) {
-        return null;
+        return new UserResponse(
+                user.getUserId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getRole(),
+                user.getCreatedAt(),
+                user.getUpdatedAt()
+        );
     }
 }

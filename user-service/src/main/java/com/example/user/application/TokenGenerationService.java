@@ -33,7 +33,7 @@ public class TokenGenerationService {
      * @return HttpHeaders with the access and refresh tokens set as cookies
      */
     public HttpHeaders getLoginCredentials(AuthRecord authRecord) {
-        log.info("Granting access to user with ID: {}", authRecord.userId());
+        log.info("Granting tokens to user with ID: {}", authRecord.userId());
         HttpHeaders headers = new HttpHeaders();
 
         TokenData tokenData = getTokenData(authRecord);
@@ -111,6 +111,7 @@ public class TokenGenerationService {
      * @return the cookie string suitable for the Set-Cookie header
      */
     private String generateCookie(String name, String value, long maxAgeSec) {
+        log.info("Generating cookie: {}", name);
         return ResponseCookie.from(name, value)
                 .maxAge(maxAgeSec)
                 .httpOnly(true)
@@ -118,6 +119,7 @@ public class TokenGenerationService {
                 .domain(env.getSecurity().getCookie().getDomain())
                 .sameSite(env.getSecurity().getCookie().getSameSite())
                 .path("/")
+                .build()
                 .toString();
     }
 }
