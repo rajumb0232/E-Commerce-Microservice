@@ -8,7 +8,6 @@ public record AuthRecord(
         String email,
         UserRole role,
         Boolean authenticated,
-        Long issueAt,
         Long accessExpiration,
         Long refreshExpiration
 ) {

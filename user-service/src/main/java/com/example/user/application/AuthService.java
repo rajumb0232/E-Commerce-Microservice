@@ -64,7 +64,6 @@ public class AuthService {
                 user.getEmail(),
                 user.getRole(),
                 true,
-                now.toEpochMilli(),
                 accessExpiration.toEpochMilli(),
                 refreshExpiration.toEpochMilli()
         );

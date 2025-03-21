@@ -25,12 +25,18 @@ public class TokenGenerationService {
      * @param authRecord the authentication authRecord containing user details
      * @return HttpHeaders with the access and refresh tokens set as cookies
      */
-    public HttpHeaders getLoginCredentials(AuthRecord authRecord) {
+    public HttpHeaders grantAccessAndRefreshTokenCookies(AuthRecord authRecord) {
         log.info("Granting tokens to user with ID: {}", authRecord.userId());
         HttpHeaders headers = new HttpHeaders();
 
-        Map<String, Object> claims = createClaims(authRecord);
+        // Building claims for the tokens
+        Map<String, Object> claims = ClaimGen.builder()
+                .addClaim(ClaimGen.USERNAME, authRecord.username())
+                .addClaim(ClaimGen.EMAIL, authRecord.email())
+                .addClaim(ClaimGen.ROLE, authRecord.role())
+                .build();
 
+        // Generating tokens for access and refresh
         String accessToken = tokenGenerationServiceHelper.issueTokenAsCookie(TokenType.ACCESS, claims, Instant.ofEpochMilli(authRecord.accessExpiration()));
         String refreshToken = tokenGenerationServiceHelper.issueTokenAsCookie(TokenType.REFRESH, claims, Instant.ofEpochMilli(authRecord.refreshExpiration()));
 
@@ -39,19 +45,5 @@ public class TokenGenerationService {
         headers.add(HttpHeaders.SET_COOKIE, refreshToken);
 
         return headers;
-    }
-
-    /**
-     * Creates a map of claims for the JWT token.
-     *
-     * @param authRecord the authentication authRecord containing user details
-     * @return a map of claims for the JWT token
-     */
-    private static Map<String, Object> createClaims(AuthRecord authRecord) {
-        return ClaimGen.builder()
-                .addClaim(ClaimGen.USERNAME, authRecord.username())
-                .addClaim(ClaimGen.EMAIL, authRecord.email())
-                .addClaim(ClaimGen.ROLE, authRecord.role())
-                .build();
     }
 }

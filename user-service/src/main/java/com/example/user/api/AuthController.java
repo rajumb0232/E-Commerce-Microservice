@@ -25,7 +25,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthRecord> loginUser(@RequestBody @Valid LoginRequest request) {
         AuthRecord authRecord = authService.authenticate(request);
-        HttpHeaders headers = tokenGenerationService.getLoginCredentials(authRecord);
+        HttpHeaders headers = tokenGenerationService.grantAccessAndRefreshTokenCookies(authRecord);
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(authRecord);
     }
 }
