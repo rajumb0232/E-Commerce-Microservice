@@ -37,6 +37,7 @@ public class UserLoginServiceImpl implements UserLoginService {
      * @return an AuthRecord containing user details and token metadata
      * @throws InvalidCredentialsException if authentication fails
      */
+    @Override
     public AuthRecord authenticate(LoginRequest request) {
         log.info("Authenticating user with email: {}", request.email());
         authenticateRequest(request);
