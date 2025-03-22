@@ -1,4 +1,4 @@
-package com.example.user.utility;
+package com.example.user.shared;
 
 import lombok.*;
 
