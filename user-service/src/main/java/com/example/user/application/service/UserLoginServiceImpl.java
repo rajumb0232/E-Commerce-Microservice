@@ -1,5 +1,6 @@
-package com.example.user.application;
+package com.example.user.application.service;
 
+import com.example.user.api.contracts.UserLoginService;
 import com.example.user.application.dto.AuthRecord;
 import com.example.user.application.dto.LoginRequest;
 import com.example.user.domain.exception.InvalidCredentialsException;
@@ -23,7 +24,7 @@ import java.time.Instant;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class AuthService {
+public class UserLoginServiceImpl implements UserLoginService {
 
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
