@@ -1,6 +1,6 @@
 package com.example.user.application.service;
 
-import com.example.user.api.contracts.UserLoginService;
+import com.example.user.application.service.contracts.UserLoginService;
 import com.example.user.application.dto.AuthRecord;
 import com.example.user.application.dto.LoginRequest;
 import com.example.user.domain.exception.InvalidCredentialsException;

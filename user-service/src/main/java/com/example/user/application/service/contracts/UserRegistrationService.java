@@ -1,4 +1,4 @@
-package com.example.user.api.contracts;
+package com.example.user.application.service.contracts;
 
 import com.example.user.application.dto.RegistrationRequest;
 import com.example.user.application.dto.UserResponse;

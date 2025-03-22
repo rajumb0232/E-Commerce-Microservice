@@ -1,7 +1,7 @@
 package com.example.user.api;
 
-import com.example.user.api.contracts.LoginCredentialGenerator;
-import com.example.user.api.contracts.UserRegistrationService;
+import com.example.user.application.service.contracts.LoginCredentialGenerator;
+import com.example.user.application.service.contracts.UserRegistrationService;
 import com.example.user.application.dto.AuthRecord;
 import com.example.user.application.dto.LoginRequest;
 import com.example.user.application.dto.RegistrationRequest;

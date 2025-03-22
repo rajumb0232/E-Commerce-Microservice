@@ -1,6 +1,6 @@
 package com.example.user.application.service;
 
-import com.example.user.api.contracts.UserAccountManagementService;
+import com.example.user.application.service.contracts.UserAccountManagementService;
 import com.example.user.domain.exception.UserNotFoundByIdException;
 import com.example.user.application.mapping.UserMapper;
 import com.example.user.domain.model.User;

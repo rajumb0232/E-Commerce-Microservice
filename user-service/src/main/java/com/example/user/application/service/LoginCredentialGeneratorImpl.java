@@ -1,6 +1,6 @@
 package com.example.user.application.service;
 
-import com.example.user.api.contracts.LoginCredentialGenerator;
+import com.example.user.application.service.contracts.LoginCredentialGenerator;
 import com.example.user.application.dto.AuthRecord;
 import com.example.user.security.jwt.ClaimGen;
 import com.example.user.security.jwt.TokenType;

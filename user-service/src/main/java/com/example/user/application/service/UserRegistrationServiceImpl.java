@@ -1,6 +1,6 @@
 package com.example.user.application.service;
 
-import com.example.user.api.contracts.UserRegistrationService;
+import com.example.user.application.service.contracts.UserRegistrationService;
 import com.example.user.application.dto.RegistrationRequest;
 import com.example.user.application.dto.UserResponse;
 import com.example.user.application.mapping.UserMapper;

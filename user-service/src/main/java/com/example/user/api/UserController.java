@@ -1,6 +1,6 @@
 package com.example.user.api;
 
-import com.example.user.api.contracts.UserAccountManagementService;
+import com.example.user.application.service.contracts.UserAccountManagementService;
 import com.example.user.application.dto.UserRequest;
 import com.example.user.application.dto.UserResponse;
 import jakarta.validation.Valid;
