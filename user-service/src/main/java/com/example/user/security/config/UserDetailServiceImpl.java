@@ -1,6 +1,7 @@
 package com.example.user.security.config;
 
 import com.example.user.domain.model.User;
+import com.example.user.infrastructure.mapping.UserMapper;
 import com.example.user.infrastructure.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserDetailServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     /**
      * Loads the user's details by their username.
@@ -29,9 +31,9 @@ public class UserDetailServiceImpl implements UserDetailsService {
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmail(username)
-                .map(user -> {
+                .map(userEntity -> {
                     log.info("Successful login for email: {}", username);
-                    return createUser(user);
+                    return createUser(userMapper.toDomain(userEntity));
                 })
                 .orElseThrow(() -> {
                     log.error("Failed login attempt for email: {}", username);

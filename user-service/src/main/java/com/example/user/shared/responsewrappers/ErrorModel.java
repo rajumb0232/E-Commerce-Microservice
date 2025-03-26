@@ -1,4 +1,4 @@
-package com.example.user.shared;
+package com.example.user.shared.responsewrappers;
 
 import lombok.*;
 

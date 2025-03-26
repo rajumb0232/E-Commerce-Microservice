@@ -1,7 +1,7 @@
 package com.example.user.api.exception;
 
 import com.example.user.domain.exception.UserNotFoundByIdException;
-import com.example.user.shared.ErrorModel;
+import com.example.user.shared.responsewrappers.ErrorModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

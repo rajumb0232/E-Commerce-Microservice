@@ -1,6 +1,6 @@
 package com.example.user.security.service;
 
-import com.example.user.infrastructure.config.Env;
+import com.example.user.shared.config.Env;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;

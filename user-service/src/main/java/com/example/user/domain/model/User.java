@@ -1,31 +1,22 @@
 package com.example.user.domain.model;
 
-import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDate;
+import java.time.Instant;
 
-@Entity
-@Table(name = "users")
 @Getter
 @NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
+@AllArgsConstructor
+@Builder
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
     private String username;
     private String email;
     private String password;
     private UserRole role;
-    @CreatedDate
-    private LocalDate createdAt;
-    @LastModifiedDate
-    private LocalDate updatedAt;
-    private LocalDate deletedAt;
+    private Instant createdAt;
+    private Instant updatedAt;
+    private Instant deletedAt;
     private boolean isDeleted;
 
     public static User create(String username, String email, String password, UserRole role) {
@@ -48,8 +39,12 @@ public class User {
 
     public void deleteUser() {
         this.isDeleted = true;
-        this.deletedAt = LocalDate.now();
+        this.deletedAt = Instant.now();
     }
 
+    public void recoverDeleted() {
+        this.isDeleted = false;
+        this.deletedAt = null;
+    }
 
 }

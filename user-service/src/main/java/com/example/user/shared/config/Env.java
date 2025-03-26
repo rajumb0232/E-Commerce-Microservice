@@ -1,4 +1,4 @@
-package com.example.user.infrastructure.config;
+package com.example.user.shared.config;
 
 import lombok.Getter;
 import lombok.Setter;

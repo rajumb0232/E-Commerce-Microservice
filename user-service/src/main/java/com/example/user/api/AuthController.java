@@ -1,13 +1,12 @@
 package com.example.user.api;
 
+import com.example.user.application.service.UserLoginServiceImpl;
 import com.example.user.application.service.contracts.LoginCredentialGenerator;
 import com.example.user.application.service.contracts.UserRegistrationService;
 import com.example.user.application.dto.AuthRecord;
 import com.example.user.application.dto.LoginRequest;
 import com.example.user.application.dto.RegistrationRequest;
 import com.example.user.application.dto.UserResponse;
-import com.example.user.application.service.LoginCredentialGenerator;
-import com.example.user.application.service.UserLoginService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -24,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final LoginCredentialGenerator authenticateService;
+    private final UserLoginServiceImpl userLoginService;
     private final UserRegistrationService userRegistrationService;
 
     @PostMapping("/register")
@@ -34,7 +34,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthRecord> loginUser(@RequestBody @Valid LoginRequest request) {
-        AuthRecord authRecord = authenticateService.authenticate(request);
+        AuthRecord authRecord = userLoginService.authenticate(request);
         HttpHeaders headers = authenticateService.grantAccessAndRefreshTokenCookies(authRecord);
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(authRecord);
     }

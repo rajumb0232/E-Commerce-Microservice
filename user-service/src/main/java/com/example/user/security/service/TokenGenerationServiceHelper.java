@@ -1,6 +1,6 @@
 package com.example.user.security.service;
 
-import com.example.user.infrastructure.config.Env;
+import com.example.user.shared.config.Env;
 import com.example.user.security.jwt.TokenGenerator;
 import com.example.user.security.jwt.TokenType;
 import lombok.AllArgsConstructor;

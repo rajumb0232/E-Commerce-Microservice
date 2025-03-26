@@ -4,8 +4,8 @@ import com.example.user.application.service.contracts.UserLoginService;
 import com.example.user.application.dto.AuthRecord;
 import com.example.user.application.dto.LoginRequest;
 import com.example.user.domain.exception.InvalidCredentialsException;
-import com.example.user.infrastructure.config.Env;
-import com.example.user.domain.model.User;
+import com.example.user.infrastructure.entity.UserEntity;
+import com.example.user.shared.config.Env;
 import com.example.user.infrastructure.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +42,7 @@ public class UserLoginServiceImpl implements UserLoginService {
         log.info("Authenticating user with email: {}", request.email());
         authenticateRequest(request);
 
-        User user = userRepository.findByEmail(request.email())
+        var user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new InvalidCredentialsException("User not found"));
 
         return generateAuthRecord(user);
@@ -55,7 +55,7 @@ public class UserLoginServiceImpl implements UserLoginService {
      * @param user the user object
      * @return an AuthRecord containing user details and token metadata
      */
-    private AuthRecord generateAuthRecord(User user) {
+    private AuthRecord generateAuthRecord(UserEntity user) {
         Instant now = Instant.now();
         Instant accessExpiration = now.plusSeconds(env.getSecurity().getTokenValidity().getAccessValidity());
         Instant refreshExpiration = now.plusSeconds(env.getSecurity().getTokenValidity().getRefreshValidity());
