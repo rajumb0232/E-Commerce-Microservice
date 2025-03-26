@@ -1,12 +1,12 @@
 package com.example.user.application.service;
 
+import com.example.user.application.repository.UserRepository;
 import com.example.user.application.service.contracts.UserLoginService;
 import com.example.user.application.dto.AuthRecord;
 import com.example.user.application.dto.LoginRequest;
 import com.example.user.domain.exception.InvalidCredentialsException;
-import com.example.user.infrastructure.entity.UserEntity;
+import com.example.user.domain.model.User;
 import com.example.user.shared.config.Env;
-import com.example.user.infrastructure.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -55,7 +55,7 @@ public class UserLoginServiceImpl implements UserLoginService {
      * @param user the user object
      * @return an AuthRecord containing user details and token metadata
      */
-    private AuthRecord generateAuthRecord(UserEntity user) {
+    private AuthRecord generateAuthRecord(User user) {
         Instant now = Instant.now();
         Instant accessExpiration = now.plusSeconds(env.getSecurity().getTokenValidity().getAccessValidity());
         Instant refreshExpiration = now.plusSeconds(env.getSecurity().getTokenValidity().getRefreshValidity());
