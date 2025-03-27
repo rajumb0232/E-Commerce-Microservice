@@ -23,10 +23,6 @@ import java.util.Map;
  * </p>
  */
 public class ClaimGen {
-    // Predefined keys for common claims
-    public static final String USERNAME = "username";
-    public static final String EMAIL = "email";
-    public static final String ROLE = "role";
 
     /**
      * Creates a new {@link ClaimBuilder} instance to construct JWT claims.
