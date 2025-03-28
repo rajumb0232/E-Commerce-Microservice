@@ -1,38 +1,9 @@
-server:
-  port: 0
-
 spring:
   # DATASOURCE CONFIGURATION
   datasource:
     url: ${PRODUCT_DB_URL}
     username: ${PRODUCT_DB_USERNAME}
     password: ${PRODUCT_DB_PASSWORD}
-  jpa:
-    open-in-view: false
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
-
-  # SERVICE DISCOVERY CONFIGURATION (CONSUL)
-  cloud:
-    consul:
-      host: ${CONSUL_HOST}
-      port: ${CONSUL_PORT}
-      discovery:
-        prefer-ip-address: true
-
-# ACTUATOR CONFIGURATION (ACTUATOR)
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health, info
-  endpoint:
-    health:
-      show-details: always
 
 #  APP CONFIGURATION (INTERNAL)
 app:
