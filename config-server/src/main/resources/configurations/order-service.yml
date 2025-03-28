@@ -1,9 +1,12 @@
+server:
+  port: 0
+
 spring:
   # DATASOURCE CONFIGURATION
   datasource:
-    url: jdbc:mysql://localhost:3306/order_service_db?createDatabaseIfNotExist=true
-    username: root
-    password: root
+    url: ${ORDER_DB_URL}
+    username: ${ORDER_DB_USERNAME}
+    password: ${ORDER_DB_PASSWORD}
   jpa:
     open-in-view: false
     show-sql: true
@@ -16,8 +19,8 @@ spring:
   # SERVICE DISCOVERY CONFIGURATION (CONSUL)
   cloud:
     consul:
-      host: localhost
-      port: 8500
+      host: ${CONSUL_HOST}
+      port: ${CONSUL_PORT}
       discovery:
         prefer-ip-address: true
 

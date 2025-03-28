@@ -36,3 +36,4 @@ mvnw
 mvnw.cmd
 .gitattributes
 .mvn
+.env

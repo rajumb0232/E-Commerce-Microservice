@@ -1,9 +1,12 @@
+server:
+  port: 0
+
 spring:
   # DATASOURCE CONFIGURATION
   datasource:
-    url: jdbc:mysql://localhost:3306/user_service_db?createDatabaseIfNotExist=true
-    username: root
-    password: root
+    url: ${USER_DB_URL}
+    username: ${USER_DB_USERNAME}
+    password: ${USER_DB_PASSWORD}
   jpa:
     open-in-view: false
     show-sql: true
@@ -12,12 +15,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
   # SERVICE DISCOVERY CONFIGURATION (CONSUL)
   cloud:
     consul:
-      host: localhost
-      port: 8500
+      host: ${CONSUL_HOST}
+      port: ${CONSUL_PORT}
       discovery:
         prefer-ip-address: true
 
@@ -36,13 +38,13 @@ app:
   base-url: /api/v1/us
   security:
     private-key:
-      path: C:\1WORKSPACE\PROJECTS\BACKEND\MICROSERVICES\Microservice_Demo\private_key.pem
+      path: ${JWT_PRIVATE_KEY_PATH}
     public-key:
-      path: C:\1WORKSPACE\PROJECTS\BACKEND\MICROSERVICES\Microservice_Demo\public_key.pem
+      path: ${JWT_PUBLIC_KEY_PATH}
     token-validity:
-      access-validity: 3600
-      refresh-validity: 1209600
+      access-validity: ${ACCESS_TOKEN_VALIDITY_SECONDS}
+      refresh-validity: ${REFRESH_TOKEN_VALIDITY_SECONDS}
     cookie:
-      domain: localhost
-      secure: false
-      same-site: Lax
+      domain: ${DOMAIN_NAME}
+      secure: ${SECURE_COOKIES}
+      same-site: ${SAME_SITE_COOKIES}

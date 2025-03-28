@@ -1,0 +1,8 @@
+spring:
+  # SERVICE DISCOVERY CONFIGURATION (CONSUL)
+  cloud:
+    consul:
+      host: ${CONSUL_HOST}
+      port: ${CONSUL_PORT}
+      discovery:
+        prefer-ip-address: true
