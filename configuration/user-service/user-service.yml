@@ -1,0 +1,50 @@
+server:
+  port: 0
+
+spring:
+  # DATASOURCE CONFIGURATION
+  datasource:
+    url: ${USER_DB_URL}
+    username: ${USER_DB_USERNAME}
+    password: ${USER_DB_PASSWORD}
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  # SERVICE DISCOVERY CONFIGURATION (CONSUL)
+  cloud:
+    consul:
+      host: ${CONSUL_HOST}
+      port: ${CONSUL_PORT}
+      discovery:
+        prefer-ip-address: true
+
+# ACTUATOR CONFIGURATION (ACTUATOR)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always
+
+#  APP CONFIGURATION (INTERNAL)
+app:
+  base-url: /api/v1/us
+  security:
+    private-key:
+      path: ${JWT_PRIVATE_KEY_PATH}
+    public-key:
+      path: ${JWT_PUBLIC_KEY_PATH}
+    token-validity:
+      access-validity: ${ACCESS_TOKEN_VALIDITY_SECONDS}
+      refresh-validity: ${REFRESH_TOKEN_VALIDITY_SECONDS}
+    cookie:
+      domain: ${DOMAIN_NAME}
+      secure: ${SECURE_COOKIES}
+      same-site: ${SAME_SITE_COOKIES}
