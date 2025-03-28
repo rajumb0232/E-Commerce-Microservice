@@ -36,7 +36,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(
                                 env.getBaseUrl() + "/login",
-                                env.getBaseUrl() + "/register")
+                                env.getBaseUrl() + "/register",
+                                "/actuator/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

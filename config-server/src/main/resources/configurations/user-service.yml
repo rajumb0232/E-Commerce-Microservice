@@ -13,6 +13,25 @@ spring:
       hibernate:
         format_sql: true
 
+  # SERVICE DISCOVERY CONFIGURATION (CONSUL)
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        prefer-ip-address: true
+
+# ACTUATOR CONFIGURATION (ACTUATOR)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always
+
+#  APP CONFIGURATION (INTERNAL)
 app:
   base-url: /api/v1/us
   security:

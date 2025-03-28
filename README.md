@@ -8,8 +8,8 @@ The application is composed of the following microservices:
 
 1. **Config Server**: 
    <br>Centralized configuration management for all services.
-2. **Eureka Server**:
-   <br>Service discovery for dynamic scaling and fault tolerance.
+2. **Service Discovery**:
+   <br>Service discovery for dynamic scaling and fault tolerance, set up using Consul.
 3. **API Gateway**:
    <br>Entry point for all client requests, routing them to the appropriate services.
 4. **User Service**:
@@ -28,7 +28,7 @@ The application is composed of the following microservices:
 - Spring Cloud
 - Spring Data JPA
 - MySQL
-- Eureka Server
+- Hashicorp Consul (Service Discovery)
 - Spring Cloud Config
 - Spring Cloud Gateway
 - OpenFeign
@@ -42,6 +42,7 @@ The application is composed of the following microservices:
 - Java 21 or later
 - Maven 3.11.0 or later+
 - MySQL database
+- Hashicorp Consul installed (for service discovery)
 
 ### Installation
 

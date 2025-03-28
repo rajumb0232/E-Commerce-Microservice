@@ -2,6 +2,11 @@ spring:
   application:
     name: api-gateway
   cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        prefer-ip-address: true
     gateway:
       routes:
 
@@ -22,8 +27,3 @@ spring:
           uri: lb://order-service
           predicates:
             - Path=/api/v1/os/**
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
