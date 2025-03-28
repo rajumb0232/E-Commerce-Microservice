@@ -3,6 +3,3 @@ spring:
     name: user-service
   config:
     import: optional:configserver:http://localhost:1000
-
-server:
-  port: 7001
