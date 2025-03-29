@@ -18,6 +18,13 @@ spring:
       port: ${CONSUL_PORT}
       discovery:
         prefer-ip-address: true
+    # SECRET MANAGER CONFIGURATION (Vault)
+    vault:
+      uri: ${VAULT_URI}
+      token: ${VAULT_TOKEN}
+      kv:
+        enabled: true
+        backend: ${VAULT_ENGINE_NAME}
 
 # ACTUATOR CONFIGURATION (ACTUATOR)
 management:

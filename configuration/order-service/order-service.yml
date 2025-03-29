@@ -4,6 +4,11 @@ spring:
     url: ${ORDER_DB_URL}
     username: ${ORDER_DB_USERNAME}
     password: ${ORDER_DB_PASSWORD}
+  # SECRET MANAGER CONFIGURATION (Vault)
+  cloud:
+    vault:
+      kv:
+        defaultContext: order-service
 
 #  APP CONFIGURATION (INTERNAL)
 app:
