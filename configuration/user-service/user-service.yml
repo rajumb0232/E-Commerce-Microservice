@@ -2,7 +2,7 @@
 app:
   base-url: /api/v1/us
   security:
-    secret-rotate-interval-minutes: "${SECRET_ROTATE_INTERVAL_MINUTES:1440}" # 1 day
+    secret-rotate-interval-millis: "${SECRET_ROTATE_INTERVAL_MILLIS:86400000}" # 1 day
     private-key:
       path: "${JWT_PRIVATE_KEY_PATH:C:\\1WORKSPACE\\PROJECTS\\BACKEND\\MICROSERVICES\\E-Commerce-Microservice\\private.key}"
     public-key:
