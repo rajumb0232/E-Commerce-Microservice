@@ -3,9 +3,9 @@ app:
   base-url: /api/v1/us
   security:
     private-key:
-      path: "${JWT_PRIVATE_KEY_PATH:C:\1WORKSPACE\PROJECTS\BACKEND\MICROSERVICES\E-Commerce-Microservice\private.key}"
+      path: "${JWT_PRIVATE_KEY_PATH:C:\\1WORKSPACE\\PROJECTS\\BACKEND\\MICROSERVICES\\E-Commerce-Microservice\\private.key}"
     public-key:
-      path: "${JWT_PUBLIC_KEY_PATH:C:\1WORKSPACE\PROJECTS\BACKEND\MICROSERVICES\E-Commerce-Microservice\public.key}"
+      path: "${JWT_PUBLIC_KEY_PATH:C:\\1WORKSPACE\\PROJECTS\\BACKEND\\MICROSERVICES\\E-Commerce-Microservice\\public.key}"
     token-validity:
       access-validity: "${ACCESS_TOKEN_VALIDITY_SECONDS:3600}"
       refresh-validity: "${REFRESH_TOKEN_VALIDITY_SECONDS:1209600}"
