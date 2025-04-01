@@ -22,6 +22,12 @@ public class SecretManager {
     private final Vault vault;
     private final CacheManager cacheManager;
 
+    /**
+     * Scheduled method that generates a new RSA key pair, updates the Vault with the new private key,
+     * publishes the public key to a cache, and adds it to the Vault's public key pool for subsequent retrieval.
+     *
+     * @throws Exception if the key generation or publishing process encounters an error
+     */
     @Scheduled(initialDelay = 0, fixedDelayString = "${app.security.secret-rotate-interval-millis}")
     public void rotateKeyPair() throws Exception {
         log.info("Rotating Key Pair...");
@@ -39,6 +45,13 @@ public class SecretManager {
         vault.addPublicKey(key, publicKey);
     }
 
+    /**
+     * Publishes the given public key string (Base64-encoded) into the PUBLIC_KEYS_POOL cache
+     * with an assigned key ID and the time at which it was generated.
+     *
+     * @param keyId           a unique identifier for the public key
+     * @param publicKeyString Base64-encoded public key string
+     */
     private void publishPublicKey(String keyId, String publicKeyString) {
         log.info("Publishing new Public Key: {}", keyId);
         Long generatedAt = System.currentTimeMillis();
@@ -54,21 +67,41 @@ public class SecretManager {
             cache.put(keyId, publicKeyMetaData);
             log.info("New Public Key published successfully.");
         }
-        else
+        else {
             log.error("Failed to publish new Public Key, Cache: {} not found.", CacheName.PUBLIC_KEYS_POOL);
+        }
     }
 
+    /**
+     * Generates and returns a new KeyPair (private and public) using an RSA algorithm, with a key size of 2048 bits.
+     *
+     * @return a newly generated RSA KeyPair
+     * @throws NoSuchAlgorithmException if the RSA algorithm is not available
+     */
     private static KeyPair generateKeyPair() throws NoSuchAlgorithmException {
         KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
         generator.initialize(2048, new SecureRandom());
         return generator.generateKeyPair();
     }
 
+    /**
+     * Encodes the given PublicKey by converting its bytes to a Base64-encoded string.
+     *
+     * @param publicKey the RSA public key to be encoded
+     * @return Base64-encoded string representation of the public key
+     */
     private static String encodePublicKey(PublicKey publicKey) {
         return Base64.getEncoder().encodeToString(publicKey.getEncoded());
     }
 
-
+    /**
+     * Retrieves the public key associated with the specified key ID from the Vault.
+     * If the key is not found in the Vault, it attempts to load the key from the PUBLIC_KEYS_POOL cache.
+     * Decoded keys are then cached back into the Vault for faster lookups.
+     *
+     * @param key a unique identifier for the public key
+     * @return the PublicKey object if found, otherwise null
+     */
     public PublicKey getPublicKey(String key) {
         var publicKey = vault.getPublicKey(key);
         if (publicKey == null) {
@@ -88,17 +121,31 @@ public class SecretManager {
         return publicKey;
     }
 
+    /**
+     * Searches for and returns the PublicKeyMetaData object from the PUBLIC_KEYS_POOL cache
+     * corresponding to the specified key ID.
+     *
+     * @param key the unique identifier used to look up metadata in the cache
+     * @return a PublicKeyMetaData instance if found, or null if not found or cache is unavailable
+     */
     private PublicKeyMetaData getFromCache(String key) {
         var cache = cacheManager.getCache(CacheName.PUBLIC_KEYS_POOL);
 
         if (cache != null) {
             return cache.get(key, PublicKeyMetaData.class);
-        } else
+        } else {
             log.error("Failed to load Public Key, Cache: {} not found.", CacheName.PUBLIC_KEYS_POOL);
-
+        }
         return null;
     }
 
+    /**
+     * Decodes a Base64-encoded string representing an RSA public key into a PublicKey object.
+     *
+     * @param publicKeyString the Base64-encoded public key to decode
+     * @return the corresponding RSA PublicKey object
+     * @throws Exception if decoding fails or if the RSA KeyFactory cannot be instantiated
+     */
     private static PublicKey decodePublicKey(String publicKeyString) throws Exception {
         byte[] keyBytes = Base64.getDecoder().decode(publicKeyString);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");

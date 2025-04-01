@@ -9,6 +9,9 @@ import java.security.PublicKey;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * InMemory Repository for storing Private and Public Keys.
+ */
 @Component
 @Getter
 @Setter

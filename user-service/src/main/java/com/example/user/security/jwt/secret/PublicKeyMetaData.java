@@ -5,6 +5,9 @@ import lombok.Getter;
 
 import java.io.Serializable;
 
+/**
+ * Metadata for a public key cache.
+ */
 @Builder
 @Getter
 public class PublicKeyMetaData implements Serializable {
