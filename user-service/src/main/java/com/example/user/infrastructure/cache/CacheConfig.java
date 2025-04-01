@@ -10,6 +10,7 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class CacheConfig {
 
     private final CacheRequirements cacheRequirements;
+    private final List<ComplexCacheRequirement> complexCacheRequirements;
 
     @Bean
     CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
@@ -28,6 +30,7 @@ public class CacheConfig {
                 .disableCachingNullValues();
 
         var cacheConfigurations = generateCacheConfigurations();
+        appendComplexCaches(cacheConfigurations);
 
         return RedisCacheManager.builder(redisConnectionFactory)
                 .cacheDefaults(defaultConfiguration)
@@ -40,13 +43,31 @@ public class CacheConfig {
                 .stream()
                 .collect(Collectors.toMap(
                         CacheRequirements.Requirement::getCacheName,
-                        requirement -> {
-                            log.info("Generating cache: {}", requirement.getCacheName());
-                            return RedisCacheConfiguration.defaultCacheConfig()
-                                    .entryTtl(Duration.ofMinutes(requirement.getTtlMinutes()))
-                                    .disableCachingNullValues();
-                        }
+                        requirement -> generateCacheConfiguration(
+                                requirement.getCacheName(),
+                                requirement.getTtlMinutes()
+                        )
                 ));
+    }
+
+    private RedisCacheConfiguration generateCacheConfiguration(String cacheName, Long ttlMinute) {
+        log.info("Generating cache: {}", cacheName);
+        return RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofMinutes(ttlMinute))
+                .disableCachingNullValues();
+    }
+
+    private void appendComplexCaches(Map<String, RedisCacheConfiguration> cacheConfigurations) {
+        complexCacheRequirements.forEach(complexCacheRequirement -> {
+            log.info("Generating complex cache: {}", complexCacheRequirement.getCacheName());
+            cacheConfigurations.put(
+                    complexCacheRequirement.getCacheName(),
+                    generateCacheConfiguration(
+                            complexCacheRequirement.getCacheName(),
+                            complexCacheRequirement.getTtlMinutes()
+                    )
+            );
+        });
     }
 
 }

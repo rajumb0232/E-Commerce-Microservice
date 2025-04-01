@@ -1,19 +1,13 @@
 package com.example.user.infrastructure.cache;
 
 import com.example.user.shared.config.Env;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.stereotype.Component;
-
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 @Getter
-public class ExplicitRequirementBeans {
+public class ExplicitCacheRequirementBeans {
 
     @Bean
     ComplexCacheRequirement publicKeyPoolRequirement(Env env) {

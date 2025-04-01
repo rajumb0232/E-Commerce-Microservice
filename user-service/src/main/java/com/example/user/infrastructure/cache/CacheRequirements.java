@@ -18,6 +18,6 @@ public class CacheRequirements {
     @Setter
     public static class Requirement {
         private String cacheName;
-        private int ttlMinutes;
+        private Long ttlMinutes;
     }
 }
