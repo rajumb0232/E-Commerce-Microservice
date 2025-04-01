@@ -1,6 +1,6 @@
 .qodo
 .idea
-private_key.pem
-public_key.pem
+private.key
+public.key
 .qodo
 .env
