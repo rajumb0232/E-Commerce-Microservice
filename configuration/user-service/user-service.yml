@@ -13,3 +13,10 @@ app:
       domain: "${DOMAIN_NAME:localhost}"
       secure: "${SECURE_COOKIES:false}"
       same-site: "${SAME_SITE_COOKIES:Lax}"
+
+spring:
+  cache:
+    type: redis
+  redis:
+    host: localhost
+    port: 6379
