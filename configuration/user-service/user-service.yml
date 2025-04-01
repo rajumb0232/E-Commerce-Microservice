@@ -4,20 +4,15 @@ spring:
     url: ${USER_DB_URL}
     username: ${USER_DB_USERNAME}
     password: ${USER_DB_PASSWORD}
-  # SECRET MANAGER CONFIGURATION (Vault)
-  cloud:
-    vault:
-      kv:
-        defaultContext: user-service
 
 #  APP CONFIGURATION (INTERNAL)
 app:
   base-url: /api/v1/us
   security:
     private-key:
-      path: ${JWT_PRIVATE_KEY}
+      path: ${JWT_PRIVATE_KEY_PATH}
     public-key:
-      path: ${JWT_PUBLIC_KEY}
+      path: ${JWT_PUBLIC_KEY_PATH}
     token-validity:
       access-validity: ${ACCESS_TOKEN_VALIDITY_SECONDS}
       refresh-validity: ${REFRESH_TOKEN_VALIDITY_SECONDS}

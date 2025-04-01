@@ -4,11 +4,6 @@ spring:
     url: ${PRODUCT_DB_URL}
     username: ${PRODUCT_DB_USERNAME}
     password: ${PRODUCT_DB_PASSWORD}
-  # SECRET MANAGER CONFIGURATION (Vault)
-  cloud:
-    vault:
-      kv:
-        defaultContext: product-service
 
 #  APP CONFIGURATION (INTERNAL)
 app:
