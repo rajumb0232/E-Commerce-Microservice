@@ -24,6 +24,7 @@ public class SecretManager {
 
     @Scheduled(initialDelay = 0, fixedDelayString = "${app.security.secret-rotate-interval-millis}")
     public void rotateKeyPair() throws Exception {
+        log.info("Rotating Key Pair...");
         KeyPair keyPair = generateKeyPair();
         vault.setPrivateKey(keyPair.getPrivate());
 
@@ -39,6 +40,7 @@ public class SecretManager {
     }
 
     private void publishPublicKey(String keyId, String publicKeyString) {
+        log.info("Publishing new Public Key: {}", keyId);
         Long generatedAt = System.currentTimeMillis();
 
         PublicKeyMetaData publicKeyMetaData = PublicKeyMetaData.builder()
@@ -48,8 +50,10 @@ public class SecretManager {
                 .build();
 
         Cache cache = cacheManager.getCache(CacheName.PUBLIC_KEYS_POOL);
-        if (cache != null)
+        if (cache != null) {
             cache.put(keyId, publicKeyMetaData);
+            log.info("New Public Key published successfully.");
+        }
         else
             log.error("Failed to publish new Public Key, Cache: {} not found.", CacheName.PUBLIC_KEYS_POOL);
     }
