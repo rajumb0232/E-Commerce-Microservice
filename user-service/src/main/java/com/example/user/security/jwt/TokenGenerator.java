@@ -1,7 +1,9 @@
 package com.example.user.security.jwt;
 
+import com.example.user.security.jwt.secret.Vault;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -18,21 +20,10 @@ import java.util.Map;
  */
 @Component
 @Slf4j
+@AllArgsConstructor
 public class TokenGenerator {
 
-    private final PrivateKey privateKey;
-
-    /**
-     * Constructs a TokenGenerator with the specified configuration.
-     *
-     * @param filePath        the file path to the RSA private key used for signing tokens
-     * @throws RuntimeException if the private key cannot be loaded
-     */
-    public TokenGenerator(
-            @Value("${app.security.private-key.path}") String filePath) {
-        log.info("Loading private key from: {}", filePath);
-        privateKey = KeyLoader.loadPrivateKey(filePath);
-    }
+    private final Vault vault;
 
     /**
      * Generates a JWT token with the specified claims and validity duration.
@@ -46,10 +37,11 @@ public class TokenGenerator {
     public String generateToken(Map<String, Object> claims, Date issuedAt, Date expiration) {
         try {
             String token = Jwts.builder()
+                    .setHeaderParam(JwtStatics.PUB_KEY_ID, vault.getCurrentPublicKeyId())
                     .setClaims(claims)
                     .setIssuedAt(issuedAt)
                     .setExpiration(expiration)
-                    .signWith(privateKey, SignatureAlgorithm.RS256)
+                    .signWith(vault.getPrivateKey(), SignatureAlgorithm.RS256)
                     .compact();
             log.info("Token generated successfully");
             return token;

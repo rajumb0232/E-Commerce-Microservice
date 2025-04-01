@@ -32,7 +32,6 @@ public class SecretManager {
     public void rotateKeyPair() throws Exception {
         log.info("Rotating Key Pair...");
         KeyPair keyPair = generateKeyPair();
-        vault.setPrivateKey(keyPair.getPrivate());
 
         PublicKey publicKey = keyPair.getPublic();
         String publicKeyString = encodePublicKey(publicKey);
@@ -42,6 +41,7 @@ public class SecretManager {
         publishPublicKey(key, publicKeyString);
 
         // Store the public key along with the key id in the publicKeyPool.
+        vault.setNewPrivateKey(keyPair.getPrivate(), key);
         vault.addPublicKey(key, publicKey);
     }
 

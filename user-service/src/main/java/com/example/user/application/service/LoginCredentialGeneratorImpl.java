@@ -3,7 +3,7 @@ package com.example.user.application.service;
 import com.example.user.application.service.contracts.LoginCredentialGenerator;
 import com.example.user.application.dto.AuthRecord;
 import com.example.user.security.jwt.ClaimGen;
-import com.example.user.security.jwt.ClaimName;
+import com.example.user.security.jwt.JwtStatics;
 import com.example.user.security.jwt.TokenType;
 import com.example.user.security.service.TokenGenerationServiceHelper;
 import lombok.AllArgsConstructor;
@@ -69,9 +69,9 @@ public class LoginCredentialGeneratorImpl implements LoginCredentialGenerator {
      */
     private Map<String, Object> buildClaims(final String username, final String email, final String role) {
         return ClaimGen.builder()
-                .addClaim(ClaimName.USERNAME, username)
-                .addClaim(ClaimName.EMAIL, email)
-                .addClaim(ClaimName.ROLE, role)
+                .addClaim(JwtStatics.USERNAME, username)
+                .addClaim(JwtStatics.EMAIL, email)
+                .addClaim(JwtStatics.ROLE, role)
                 .build();
     }
 

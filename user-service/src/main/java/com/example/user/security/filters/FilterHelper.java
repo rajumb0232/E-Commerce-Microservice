@@ -1,7 +1,7 @@
 package com.example.user.security.filters;
 
 import com.example.user.domain.model.UserRole;
-import com.example.user.security.jwt.ClaimName;
+import com.example.user.security.jwt.JwtStatics;
 import com.example.user.security.jwt.TokenParser;
 import com.example.user.security.jwt.TokenType;
 import io.jsonwebtoken.Claims;
@@ -59,9 +59,9 @@ public class FilterHelper {
     public ExtractedTokenClaims extractTokenClaims(String token) {
         Claims claims = tokenParser.parseToken(token);
         var extractedClaims = new ExtractedTokenClaims(
-                claims.get(ClaimName.USERNAME, String.class),
-                claims.get(ClaimName.EMAIL, String.class),
-                UserRole.valueOf(claims.get(ClaimName.ROLE, String.class)),
+                claims.get(JwtStatics.USERNAME, String.class),
+                claims.get(JwtStatics.EMAIL, String.class),
+                UserRole.valueOf(claims.get(JwtStatics.ROLE, String.class)),
                 claims.getExpiration().getTime(),
                 claims.getExpiration().getTime()
         );
