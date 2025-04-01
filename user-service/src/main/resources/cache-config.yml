@@ -1,0 +1,6 @@
+cache:
+  requirements:
+      - cacheName: "public-keys-pool"
+        ttlMinutes: 10
+      - cacheName: "user-cache"
+        ttlMinutes: 10
