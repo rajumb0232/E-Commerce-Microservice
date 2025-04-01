@@ -11,11 +11,12 @@ public class ExplicitCacheRequirementBeans {
 
     @Bean
     ComplexCacheRequirement publicKeyPoolRequirement(Env env) {
-        var greaterExpiration = env.getSecurity().getTokenValidity().getRefreshValidity();
-        var secretRotateInterval = env.getSecurity().getSecretRotateIntervalMinutes();
+        Long greaterExpiration = env.getSecurity().getTokenValidity().getRefreshValidity();
+        Long secretRotateInterval = env.getSecurity().getSecretRotateIntervalMillis();
+        Long ttlMinutes = greaterExpiration + secretRotateInterval;
         return ComplexCacheRequirement.builder()
                 .cacheName(CacheName.PUBLIC_KEYS_POOL)
-                .ttlMinutes(greaterExpiration + secretRotateInterval)
+                .ttlMinutes(ttlMinutes)
                 .build();
     }
 }

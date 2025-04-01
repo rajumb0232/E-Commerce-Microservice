@@ -16,7 +16,7 @@ public class Env {
     @Getter
     @Setter
     public static class Security {
-        private Long secretRotateIntervalMinutes;
+        private Long secretRotateIntervalMillis;
         private TokenValidity tokenValidity;
         private Cookie cookie;
 
