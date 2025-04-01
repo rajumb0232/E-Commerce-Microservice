@@ -3,6 +3,10 @@ server:
 
 spring:
   # DATASOURCE CONFIGURATION
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     open-in-view: false
     show-sql: true
@@ -14,8 +18,8 @@ spring:
   # SERVICE DISCOVERY CONFIGURATION (CONSUL)
   cloud:
     consul:
-      host: ${CONSUL_HOST}
-      port: ${CONSUL_PORT}
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
       discovery:
         prefer-ip-address: true
 

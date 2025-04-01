@@ -1,22 +1,15 @@
-spring:
-  # DATASOURCE CONFIGURATION
-  datasource:
-    url: ${USER_DB_URL}
-    username: ${USER_DB_USERNAME}
-    password: ${USER_DB_PASSWORD}
-
-#  APP CONFIGURATION (INTERNAL)
+# APP CONFIGURATION (INTERNAL)
 app:
   base-url: /api/v1/us
   security:
     private-key:
-      path: ${JWT_PRIVATE_KEY_PATH}
+      path: "${JWT_PRIVATE_KEY_PATH:C:\1WORKSPACE\PROJECTS\BACKEND\MICROSERVICES\E-Commerce-Microservice\private.key}"
     public-key:
-      path: ${JWT_PUBLIC_KEY_PATH}
+      path: "${JWT_PUBLIC_KEY_PATH:C:\1WORKSPACE\PROJECTS\BACKEND\MICROSERVICES\E-Commerce-Microservice\public.key}"
     token-validity:
-      access-validity: ${ACCESS_TOKEN_VALIDITY_SECONDS}
-      refresh-validity: ${REFRESH_TOKEN_VALIDITY_SECONDS}
+      access-validity: "${ACCESS_TOKEN_VALIDITY_SECONDS:3600}"
+      refresh-validity: "${REFRESH_TOKEN_VALIDITY_SECONDS:1209600}"
     cookie:
-      domain: ${DOMAIN_NAME}
-      secure: ${SECURE_COOKIES}
-      same-site: ${SAME_SITE_COOKIES}
+      domain: "${DOMAIN_NAME:localhost}"
+      secure: "${SECURE_COOKIES:false}"
+      same-site: "${SAME_SITE_COOKIES:Lax}"
