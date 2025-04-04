@@ -2,7 +2,6 @@ package com.example.order.application.facade;
 
 import com.example.order.application.dto.CartItemResponse;
 import com.example.order.application.mapping.CartMapper;
-import com.example.order.domain.model.CartItem;
 import com.example.order.domain.service.contracts.CartService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

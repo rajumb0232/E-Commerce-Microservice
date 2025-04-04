@@ -2,17 +2,14 @@ package com.example.order.application.mapping;
 
 import com.example.order.application.dto.OrderItemResponse;
 import com.example.order.application.dto.OrderResponse;
-import com.example.order.application.dto.ProductResponse;
 import com.example.order.domain.model.Order;
 import com.example.order.domain.model.OrderItem;
-import com.example.order.domain.model.Product;
 import org.mapstruct.Mapper;
 
-import java.time.Instant;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface OrderMapper {
+public interface OrderMapper extends InstantsMapper {
 
     /**
      * Maps the given Order object to an OrderResponse object.
@@ -28,13 +25,4 @@ public interface OrderMapper {
 
     OrderItemResponse mapToOrderItemResponse(OrderItem orderItem);
 
-    default Long toEpochMillis(Instant instant){
-        return instant.toEpochMilli();
-    }
-
-    default Instant toInstant(Long epochMillis){
-        return Instant.ofEpochMilli(epochMillis);
-    }
-
-    ProductResponse toProductResponse(Product product);
 }

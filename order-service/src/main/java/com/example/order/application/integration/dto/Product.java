@@ -1,8 +1,6 @@
-package com.example.order.domain.model;
+package com.example.order.application.integration.dto;
 
 import lombok.*;
-
-import java.time.LocalDate;
 
 @Getter
 @Setter

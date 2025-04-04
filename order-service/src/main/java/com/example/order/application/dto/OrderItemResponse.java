@@ -2,15 +2,12 @@ package com.example.order.application.dto;
 
 import com.example.order.domain.model.OrderStatus;
 
-import java.time.Instant;
-
 public record OrderItemResponse(
         Long itemId,
-        ProductResponse product,
+        Long productId,
         Integer quantity,
         Long createdAt,
         Long updatedAt,
-        Double totalPrice,
         OrderStatus orderStatus
 ) {
 }

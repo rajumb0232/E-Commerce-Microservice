@@ -1,7 +1,6 @@
 package com.example.order.application.service;
 
 import com.example.order.application.mapping.OrderMapper;
-import com.example.order.domain.model.CartItem;
 import com.example.order.domain.model.Order;
 import com.example.order.domain.model.OrderItem;
 import com.example.order.domain.model.OrderStatus;
@@ -11,8 +10,6 @@ import com.example.order.domain.repository.OrderRepository;
 import com.example.order.domain.service.contracts.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
@@ -27,10 +24,10 @@ public class OrderServiceImpl implements OrderService {
     public Order createOrder(String username) {
         var orderItems = cartItemRepository.findAllByCreatedBy(username)
                 .stream()
-                .map(item -> OrderItem.createNew(item.getProduct(), item.getQuantity()))
+                .map(item -> OrderItem.createNew(item.getProductId(), item.getQuantity()))
                 .toList();
 
-        orderItems = orderItemRepository.saveAll(orderItems);
+//        orderItems = orderItemRepository.saveAll(orderItems);
         var order = Order.createNew(orderItems);
         return orderRepository.save(order);
     }

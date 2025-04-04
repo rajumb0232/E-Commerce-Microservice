@@ -1,16 +1,12 @@
-package com.example.order.infrastructure.database;
+package com.example.order.infrastructure.database.entities;
 
-import com.example.order.domain.model.OrderItem;
-import com.example.order.domain.model.OrderStatus;
-import com.example.order.model.CartItem;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -27,17 +23,15 @@ public class OrderEntity {
     @Column(name = "order_id")
     private Long orderId;
 
-    @Column(name = "total_payable_amount")
-    private Double totalPayableAmount;
-
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "order_id")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<OrderItemEntity> orderItems;
 
     @Column(name = "created_at")
+    @CreatedDate
     private Instant createdAt;
 
     @Column(name = "updated_at")
+    @LastModifiedDate
     private Instant updatedAt;
 
     @Column(name = "created_by")

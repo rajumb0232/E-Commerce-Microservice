@@ -1,12 +1,11 @@
 package com.example.order.application.service;
 
 import com.example.order.application.integration.ProductClient;
-import com.example.order.application.mapping.CartMapper;
 import com.example.order.domain.repository.CartItemRepository;
 import com.example.order.domain.service.contracts.CartService;
 import com.example.order.domain.exceptions.CartItemsNotFoundException;
 import com.example.order.domain.model.CartItem;
-import com.example.order.domain.model.Product;
+import com.example.order.application.integration.dto.Product;
 import com.example.order.domain.exceptions.ProductOutOfStockException;
 import feign.FeignException;
 import lombok.AllArgsConstructor;
@@ -32,7 +31,7 @@ public class CartServiceImpl implements CartService {
                     item.updateQuantity(quantity);
                     return item;
                 })
-                .orElseGet(() -> CartItem.createNew(product, quantity));
+                .orElseGet(() -> CartItem.createNew(productId, quantity));
 
         return cartItemRepository.save(cartItem);
     }
@@ -61,7 +60,7 @@ public class CartServiceImpl implements CartService {
         if (product == null || product.getStock() < quantity) {
             log.error("Product {} may not exit or not available with requested quantity {}", productId, quantity);
             throw new ProductOutOfStockException(
-                    String.format("Failed to add product ID %d with quantity %d to cart - insufficient stock or product may not exist.",
+                    String.format("Failed to add productId ID %d with quantity %d to cart - insufficient stock or productId may not exist.",
                             productId, quantity));
         }
         log.info("Product availability confirmed for productId: {} with quantity: {}", productId, quantity);
@@ -79,8 +78,8 @@ public class CartServiceImpl implements CartService {
                 log.error("Product not found with id: {}", productId);
                 throw new RuntimeException("Product not found with id: " + productId);
             }
-            log.error("Failed to retrieve product with id: {}", productId);
-            throw new RuntimeException("Failed to retrieve product with id: " + productId);
+            log.error("Failed to retrieve productId with id: {}", productId);
+            throw new RuntimeException("Failed to retrieve productId with id: " + productId);
         }
         return product;
     }

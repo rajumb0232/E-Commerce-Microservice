@@ -1,6 +1,6 @@
 package com.example.order.application.integration;
 
-import com.example.order.domain.model.Product;
+import com.example.order.application.integration.dto.Product;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 

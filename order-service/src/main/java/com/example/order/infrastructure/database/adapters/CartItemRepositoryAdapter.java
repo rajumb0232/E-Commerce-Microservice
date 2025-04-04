@@ -2,13 +2,12 @@ package com.example.order.infrastructure.database.adapters;
 
 import com.example.order.domain.model.CartItem;
 import com.example.order.infrastructure.mapping.CartEntityMapper;
-import com.example.order.infrastructure.database.CartItemRepository;
+import com.example.order.infrastructure.database.repositories.CartItemRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Repository
 @AllArgsConstructor
@@ -19,10 +18,10 @@ public class CartItemRepositoryAdapter implements com.example.order.domain.repos
     @Override
     public CartItem save(CartItem cartItem) {
         var entity = cartEntityMapper.toEntity(cartItem);
-        cartItemRepository.save(entity);
-        // ensuring the associated Product doesn't get updated
-        cartEntityMapper.toCartItem(entity, cartItem);
-        return cartItem;
+        entity = cartItemRepository.save(entity);
+
+        // mapping updated data to a new CartItem object
+        return cartEntityMapper.toCartItem(entity);
     }
 
     @Override

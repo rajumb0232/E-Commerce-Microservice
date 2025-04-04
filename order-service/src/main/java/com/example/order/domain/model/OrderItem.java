@@ -9,19 +9,17 @@ import java.time.Instant;
 @Getter
 public class OrderItem {
     private Long itemId;
-    private Product product;
+    private Long productId;
     private int quantity;
     private String createdBy;
     private Instant createdAt;
     private Instant updatedAt;
-    private Double totalPrice;
     private OrderStatus orderStatus;
 
-    public static OrderItem createNew(Product product, int quantity) {
+    public static OrderItem createNew(Long productId, int quantity) {
         return OrderItem.builder()
-                .product(product)
+                .productId(productId)
                 .quantity(quantity)
-                .totalPrice(product.getPrice() * quantity)
                 .orderStatus(OrderStatus.PENDING)
                 .build();
     }
