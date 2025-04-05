@@ -34,12 +34,13 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authenticationProvider(authenticationProvider)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(
-                                env.getBaseUrl() + "/login",
-                                env.getBaseUrl() + "/register",
-                                "/actuator/**")
-                        .permitAll()
-                        .anyRequest().authenticated())
+//                        .requestMatchers(
+//                                env.getBaseUrl() + "/login",
+//                                env.getBaseUrl() + "/register",
+//                                "/actuator/**")
+//                        .permitAll()
+//                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(filterFactory.getAuthFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();

@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("${app.base-url}")
+//@RequestMapping("${app.base-url}")
 @AllArgsConstructor
 public class UserController {
 

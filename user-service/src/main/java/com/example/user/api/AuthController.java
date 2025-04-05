@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("${app.base-url}")
+//@RequestMapping("${app.base-url}")
 public class AuthController {
 
     private final LoginCredentialGenerator authenticateService;

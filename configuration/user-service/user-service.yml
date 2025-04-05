@@ -4,7 +4,7 @@ server:
 
 # APP CONFIGURATION (INTERNAL)
 app:
-  base-url: /api/v1/us
+  base-url: /api/us/v1
   security:
     secret-rotate-interval-millis: "${SECRET_ROTATE_INTERVAL_MILLIS:86400000}" # 1 day
     private-key:

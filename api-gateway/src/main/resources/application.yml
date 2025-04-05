@@ -1,29 +1,42 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: api-gateway
+
   cloud:
     consul:
       host: localhost
       port: 8500
       discovery:
         prefer-ip-address: true
+        register: true  # Optional, makes sure gateway is registered to Consul
+
     gateway:
-      routes:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+          include-expression: metadata['basePath'] != null
 
-        # USER-SERVICE
-        - id: user-service
-          uri: lb://user-service
-          predicates:
-            - Path=/api/v1/us/**
 
-        # PRODUCT-SERVICE
-        - id: product-service
-          uri: lb://product-service
-          predicates:
-            - Path=/api/v1/ps/**
-
-        # ORDER-SERVICE
-        - id: order-service
-          uri: lb://order-service
-          predicates:
-            - Path=/api/v1/os/**
+#      routes:
+#
+#        # USER-SERVICE
+#        - id: user-service
+#          uri: lb://user-service
+#          predicates:
+#            - Path=/api/v1/us/**
+#
+#        # PRODUCT-SERVICE
+#        - id: product-service
+#          uri: lb://product-service
+#          predicates:
+#            - Path=/api/v1/ps/**
+#
+#        # ORDER-SERVICE
+#        - id: order-service
+#          uri: lb://order-service
+#          predicates:
+#            - Path=/api/v1/os/**
