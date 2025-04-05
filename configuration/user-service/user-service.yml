@@ -26,5 +26,5 @@ spring:
   cloud:
     consul:
       discovery:
-        tags:
-          - basePath=${app.base-url}
+        metadata:
+          basePath: ${app.base-url}
