@@ -1,9 +1,9 @@
-package com.example.product.controller;
+package com.example.product.api.controller;
 
 import com.example.product.requestdto.ProductRequest;
 import com.example.product.responsedto.ProductResponse;
-import com.example.product.service.ProductService;
-import com.example.product.util.CustomPage;
+import com.example.product.application.service.ProductService;
+import com.example.product.shared.CustomPage;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

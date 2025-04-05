@@ -1,15 +1,13 @@
-package com.example.product.service;
+package com.example.product.application.service;
 
-import com.example.product.exception.ProductNotFoundByIdException;
-import com.example.product.mapper.ProductMapper;
-import com.example.product.model.Product;
-import com.example.product.repository.ProductRepository;
+import com.example.product.domain.exception.ProductNotFoundByIdException;
+import com.example.product.application.mapper.ProductMapper;
+import com.example.product.domain.model.Product;
+import com.example.product.domain.repository.ProductRepository;
 import com.example.product.requestdto.ProductRequest;
 import com.example.product.responsedto.ProductResponse;
-import com.example.product.util.CustomPage;
+import com.example.product.shared.CustomPage;
 import lombok.AllArgsConstructor;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.example.product.util;
+package com.example.product.shared;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

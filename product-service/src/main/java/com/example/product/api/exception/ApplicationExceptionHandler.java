@@ -1,6 +1,7 @@
-package com.example.product.exception;
+package com.example.product.api.exception;
 
-import com.example.product.util.ErrorStructure;
+import com.example.product.domain.exception.ProductNotFoundByIdException;
+import com.example.product.shared.ErrorStructure;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
