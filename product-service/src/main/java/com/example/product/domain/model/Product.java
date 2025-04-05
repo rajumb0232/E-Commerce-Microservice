@@ -22,12 +22,22 @@ import java.time.LocalDate;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, updatable = false)
     private Long id;
+
+    @Column(name = "title")
     private String title;
-    @Column(length = 2000)
+
+    @Column(name = "description", length = 2000)
     private String description;
+
+    @Column(name = "price")
     private double price;
+
+    @Column(name = "stock")
     private int stock;
+
+    @Column(name = "category")
     private String category;
 
     @CreatedDate
@@ -38,6 +48,6 @@ public class Product {
     @Column(name = "updated_at", nullable = false)
     private LocalDate updatedAt;
 
-    @Column(name = "sellerId", nullable = false, updatable = false)
+    @Column(name = "seller_id", nullable = false, updatable = false)
     private Long sellerId;
 }
