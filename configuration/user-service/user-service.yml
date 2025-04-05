@@ -1,3 +1,7 @@
+server:
+  servlet:
+    context-path: /api/us/v1
+
 # APP CONFIGURATION (INTERNAL)
 app:
   base-url: /api/v1/us
