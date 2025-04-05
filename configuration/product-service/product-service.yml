@@ -1,3 +1,11 @@
 #  APP CONFIGURATION (INTERNAL)
 app:
-  base-url: /api/v1/ps
+  base-url: /api/v1/products
+
+spring:
+  # Service Discovery configuration
+  cloud:
+    consul:
+      discovery:
+        metadata:
+          basePath: ${app.base-url}
