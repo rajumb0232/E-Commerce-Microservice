@@ -1,7 +1,7 @@
 package com.example.product.api.controller;
 
-import com.example.product.requestdto.ProductRequest;
-import com.example.product.responsedto.ProductResponse;
+import com.example.product.application.dto.ProductRequest;
+import com.example.product.application.dto.ProductResponse;
 import com.example.product.application.service.ProductService;
 import com.example.product.shared.CustomPage;
 import lombok.AllArgsConstructor;

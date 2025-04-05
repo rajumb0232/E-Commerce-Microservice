@@ -1,8 +1,8 @@
 package com.example.product.application.mapper;
 
+import com.example.product.application.dto.ProductRequest;
+import com.example.product.application.dto.ProductResponse;
 import com.example.product.domain.model.Product;
-import com.example.product.requestdto.ProductRequest;
-import com.example.product.responsedto.ProductResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 

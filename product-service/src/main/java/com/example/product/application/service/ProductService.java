@@ -1,11 +1,11 @@
 package com.example.product.application.service;
 
+import com.example.product.application.dto.ProductRequest;
+import com.example.product.application.dto.ProductResponse;
 import com.example.product.domain.exception.ProductNotFoundByIdException;
 import com.example.product.application.mapper.ProductMapper;
 import com.example.product.domain.model.Product;
 import com.example.product.domain.repository.ProductRepository;
-import com.example.product.requestdto.ProductRequest;
-import com.example.product.responsedto.ProductResponse;
 import com.example.product.shared.CustomPage;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
