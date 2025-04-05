@@ -23,11 +23,12 @@ The application is composed of the following microservices:
 
 ## Technologies Used
 
-- Java 21
-- Spring Boot 3.4.2
+- Java 17
+- Spring Boot 3.4.x
 - Spring Cloud
 - Spring Data JPA
 - MySQL
+- Redis
 - Hashicorp Consul (Service Discovery)
 - Spring Cloud Config
 - Spring Cloud Gateway
@@ -39,9 +40,10 @@ The application is composed of the following microservices:
 
 ### Prerequisites
 
-- Java 21 or later
-- Maven 3.11.0 or later+
+- Java 17 (only)
+- Maven (any latest version)
 - MySQL database
+- Redis
 - Hashicorp Consul installed (for service discovery)
 
 ### Installation
