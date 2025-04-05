@@ -1,6 +1,6 @@
 # APP CONFIGURATION (INTERNAL)
 app:
-  base-url: /api/v1/orders
+  base-url: /api/v1/users
   security:
     secret-rotate-interval-millis: "${SECRET_ROTATE_INTERVAL_MILLIS:86400000}" # 1 day
     private-key:
