@@ -1,4 +1,4 @@
-package com.example.product.constroller;
+package com.example.product.controller;
 
 import com.example.product.requestdto.ProductRequest;
 import com.example.product.responsedto.ProductResponse;
