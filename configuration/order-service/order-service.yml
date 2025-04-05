@@ -1,7 +1,15 @@
 #  APP CONFIGURATION (INTERNAL)
 app:
-  base-url: /api/v1/os
+  base-url: /api/v1/products
   client:
     product:
       name: product-service
       url: http://localhost:7002/api/v1/ps
+
+spring:
+  # Service Discovery configuration
+  cloud:
+    consul:
+      discovery:
+        metadata:
+          basePath: ${app.base-url}
