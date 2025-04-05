@@ -4,7 +4,6 @@ app:
   client:
     product:
       name: product-service
-      url: http://localhost:7002/api/v1/ps
 
 spring:
   # Service Discovery configuration
