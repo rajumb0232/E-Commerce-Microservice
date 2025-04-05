@@ -1,10 +1,6 @@
-server:
-  servlet:
-    context-path: /api/us/v1
-
 # APP CONFIGURATION (INTERNAL)
 app:
-  base-url: /api/us/v1
+  base-url: /api/v1/orders
   security:
     secret-rotate-interval-millis: "${SECRET_ROTATE_INTERVAL_MILLIS:86400000}" # 1 day
     private-key:
@@ -25,3 +21,10 @@ spring:
   redis:
     host: "${REDIS_HOST:localhost}"
     port: "${REDIS_PORT:6379}"
+
+  # Service Discovery configuration
+  cloud:
+    consul:
+      discovery:
+        tags:
+          - basePath=${app.base-url}
