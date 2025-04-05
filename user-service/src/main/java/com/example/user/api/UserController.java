@@ -10,30 +10,30 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-//@RequestMapping("${app.base-url}")
+@RequestMapping("${app.base-url}")
 @AllArgsConstructor
 public class UserController {
 
     private final UserAccountManagementService accountManagementService;
 
-    @GetMapping("/users")
+    @GetMapping
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("Yes I'm Up - User Service");
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<UserResponse> findUserById(@PathVariable Long id) {
         UserResponse response = accountManagementService.findUserById(id);
         return ResponseEntity.status(HttpStatus.FOUND).body(response);
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody @Valid UserRequest request) {
         UserResponse response = accountManagementService.updateUser(id, request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         accountManagementService.deleteUser(id);
         return ResponseEntity.ok("User deleted successfully");

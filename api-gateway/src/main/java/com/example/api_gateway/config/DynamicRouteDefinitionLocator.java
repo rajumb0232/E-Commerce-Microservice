@@ -1,8 +1,9 @@
 package com.example.api_gateway.config;
 
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.cloud.gateway.filter.FilterDefinition;
 import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
@@ -14,42 +15,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
-public class DynamicRouteDefinitionLocator {
+@Slf4j
+@AllArgsConstructor
+public class DynamicRouteDefinitionLocator implements RouteDefinitionLocator {
 
-    RouteDefinitionLocator routeDefinitionLocator(DiscoveryClient discoveryClient) {
-        return () -> {
-            discoveryClient.getServices().forEach(System.err::println);
+    private final DiscoveryClient discoveryClient;
 
-            List<RouteDefinition> routeDefinitions = new ArrayList<>();
+    @Override
+    public Flux<RouteDefinition> getRouteDefinitions() {
+        List<RouteDefinition> routeDefinitions = new ArrayList<>();
 
-            discoveryClient.getServices().forEach(serviceId -> {
-                List<ServiceInstance> instances = discoveryClient.getInstances(serviceId);
-                if (instances.isEmpty()) return;
+        discoveryClient.getServices().forEach(serviceId -> {
+            log.info("Found Service with ID: {}", serviceId);
+            List<ServiceInstance> instances = discoveryClient.getInstances(serviceId);
+            if (instances.isEmpty()) return;
 
-                ServiceInstance instance = instances.get(0); // One instance is enough per versioned service
-                String basePath = instance.getMetadata().get("basePath");
+            ServiceInstance instance = instances.get(0); // One instance is enough per versioned service
 
-                if (basePath != null) {
-                    RouteDefinition routeDefinition = new RouteDefinition();
-                    routeDefinition.setId(serviceId); // ID per version
-                    routeDefinition.setUri(URI.create("lb://" + serviceId)); // Load-balanced URI
+            String basePath = instance.getMetadata().get("basePath");
 
-                    PredicateDefinition predicate = new PredicateDefinition();
-                    predicate.setName("Path");
-                    predicate.addArg("_genkey_0", basePath + "/**");
+            if (basePath != null) {
+                RouteDefinition routeDefinition = new RouteDefinition();
+                routeDefinition.setId(serviceId); // ID per version
+                routeDefinition.setUri(URI.create("lb://" + serviceId)); // Load-balanced URI
 
-                    FilterDefinition filter = new FilterDefinition();
-                    filter.setName("StripPrefix");
-                    filter.addArg("_genkey_0", String.valueOf(basePath.split("/").length - 1));
+                PredicateDefinition predicate = new PredicateDefinition();
+                predicate.setName("Path");
+                predicate.addArg("_genkey_0", basePath + "/**");
 
-                    routeDefinition.setPredicates(List.of(predicate));
-                    routeDefinition.setFilters(List.of(filter));
+                routeDefinition.setPredicates(List.of(predicate));
 
-                    routeDefinitions.add(routeDefinition);
-                }
-            });
+                log.info("Adding route for service {} at base path {}", serviceId, basePath);
+                routeDefinitions.add(routeDefinition);
+            }
+        });
 
-            return Flux.fromIterable(routeDefinitions);
-        };
+        return Flux.fromIterable(routeDefinitions);
     }
 }

@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: api-gateway
+  main:
+    allow-bean-definition-overriding: true
 
   cloud:
     consul:
