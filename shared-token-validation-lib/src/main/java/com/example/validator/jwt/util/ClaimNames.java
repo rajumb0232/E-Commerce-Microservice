@@ -1,4 +1,4 @@
-package com.example.sharedjwtvalidation.security.jwt.util;
+package com.example.validator.jwt.util;
 
 public class ClaimNames {
     public static final String USERNAME = "username";

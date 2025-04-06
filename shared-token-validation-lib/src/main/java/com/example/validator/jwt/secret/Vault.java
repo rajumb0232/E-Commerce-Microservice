@@ -1,6 +1,8 @@
-package com.example.sharedjwtvalidation.security.jwt.secret;
+package com.example.validator.jwt.secret;
 
-import com.example.sharedjwtvalidation.security.jwt.contracts.TokenLocatorService;
+import com.example.validator.exceptions.InvalidPublicKeyException;
+import com.example.validator.exceptions.InvalidPublicKeyMetaDataException;
+import com.example.validator.jwt.contracts.TokenLocatorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +31,7 @@ public class Vault {
      * @param keyId a unique identifier for the public keyId
      * @return the PublicKey object if found, otherwise null
      */
-    public PublicKey getPublicKey(String keyId) {
+    public PublicKey getPublicKey(String keyId) throws InvalidPublicKeyMetaDataException {
         var publicKey = publicKeyPool.get(keyId);
         if (publicKey == null) {
 
@@ -39,9 +41,12 @@ public class Vault {
             if (metaData != null && metaData.getId() != null && metaData.getPublicKey() != null) {
                 publicKey = addNewToPool(metaData);
                 log.info("New PublicKey registered successfully.");
-            } else
+            } else {
                 log.warn("PublicKey MetaData invalid or not found; failed to register new public keyId.");
+                throw new InvalidPublicKeyMetaDataException("Invalid or not found PublicKeyMetaData; failed to register new public keyId.");
+            }
         }
+
         log.debug("Public keyId retrieved from pool.");
         return publicKey;
     }
@@ -60,11 +65,10 @@ public class Vault {
             return publicKey;
 
         } catch (Exception e) {
-            log.error("Failed to decode public key with id: {}", metaData.getId(), e);
-            return null;
+            log.error("Failed to decode public key with id: {}", metaData.getId());
+            throw new InvalidPublicKeyException("Failed to register new public key.", e);
         }
     }
-
 
     /**
      * Decodes a Base64-encoded string representing an RSA public key into a PublicKey object.
