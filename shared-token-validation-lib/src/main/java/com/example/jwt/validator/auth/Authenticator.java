@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * This class handles the authentication of JWT tokens.
  * Example:
  * <pre>
- *     boolean result = jwtAuthenticator.authenticateJwt(request)
+ *     boolean result = jwtAuthenticator.authenticateForJwt(request)
  *                                      .forTokenType(TokenType.ACCESS)
  *                                      .orchestrate();
  * </pre>
@@ -26,7 +26,7 @@ public class Authenticator {
      * @param request the HTTP request that has to be authenticated.
      * @return a {@link JwtAuthOrchestrator} instance to further configure the authentication process.
      */
-    public JwtAuthOrchestrator authenticateJwt(HttpServletRequest request) {
+    public JwtAuthOrchestrator authenticateForJwt(HttpServletRequest request) {
         return new JwtAuthOrchestrator(tokenParser, request);
     }
 }
