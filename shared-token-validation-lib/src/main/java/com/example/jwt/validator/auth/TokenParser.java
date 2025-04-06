@@ -1,10 +1,11 @@
-package com.example.validator.jwt.util;
+package com.example.jwt.validator.auth;
 
-import com.example.validator.exceptions.InvalidJwtException;
-import com.example.validator.exceptions.InvalidPublicKeyException;
-import com.example.validator.exceptions.InvalidPublicKeyIdentifierException;
-import com.example.validator.exceptions.PublicKeyForTokenNotFoundException;
-import com.example.validator.jwt.secret.Vault;
+import com.example.jwt.validator.exceptions.InvalidJwtException;
+import com.example.jwt.validator.exceptions.InvalidPublicKeyException;
+import com.example.jwt.validator.exceptions.InvalidPublicKeyIdentifierException;
+import com.example.jwt.validator.exceptions.PublicKeyForTokenNotFoundException;
+import com.example.jwt.validator.secret.Vault;
+import com.example.jwt.validator.util.ClaimNames;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;

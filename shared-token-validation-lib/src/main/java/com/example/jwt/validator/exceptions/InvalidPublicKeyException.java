@@ -1,4 +1,4 @@
-package com.example.validator.exceptions;
+package com.example.jwt.validator.exceptions;
 
 public class InvalidPublicKeyException extends RuntimeException {
     public InvalidPublicKeyException(String message) {

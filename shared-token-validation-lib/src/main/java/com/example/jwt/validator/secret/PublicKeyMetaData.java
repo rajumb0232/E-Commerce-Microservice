@@ -1,4 +1,4 @@
-package com.example.validator.jwt.secret;
+package com.example.jwt.validator.secret;
 
 import lombok.Builder;
 import lombok.Getter;

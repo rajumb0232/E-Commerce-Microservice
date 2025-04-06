@@ -1,4 +1,4 @@
-package com.example.validator;
+package com.example.jwt.validator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

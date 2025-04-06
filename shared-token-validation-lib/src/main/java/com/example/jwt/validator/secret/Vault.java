@@ -1,8 +1,8 @@
-package com.example.validator.jwt.secret;
+package com.example.jwt.validator.secret;
 
-import com.example.validator.exceptions.InvalidPublicKeyException;
-import com.example.validator.exceptions.InvalidPublicKeyMetaDataException;
-import com.example.validator.jwt.contracts.TokenLocatorService;
+import com.example.jwt.validator.exceptions.InvalidPublicKeyException;
+import com.example.jwt.validator.exceptions.InvalidPublicKeyMetaDataException;
+import com.example.jwt.validator.contracts.TokenLocatorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package com.example.validator.exceptions;
+package com.example.jwt.validator.exceptions;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
