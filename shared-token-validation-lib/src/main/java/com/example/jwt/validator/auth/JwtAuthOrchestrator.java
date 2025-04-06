@@ -1,36 +1,21 @@
 package com.example.jwt.validator.auth;
 
+import com.example.jwt.validator.exceptions.InvalidJwtException;
 import com.example.jwt.validator.util.ClaimNames;
 import com.example.jwt.validator.util.TokenType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
 
 @Slf4j
-public class JwtAuthOrchestrator {
-    private boolean isValid;
-    private String username;
-    private String role;
+public class JwtAuthOrchestrator extends AuthOrchestrator {
     private TokenType type;
-
-    private final HttpServletRequest request;
     private final TokenParser parser;
 
     public JwtAuthOrchestrator(TokenParser parser, HttpServletRequest request) {
+        super(request);
         this.parser = parser;
-        this.request = request;
     }
 
     /**
@@ -48,7 +33,6 @@ public class JwtAuthOrchestrator {
      * Orchestrate the authentication process. <br>
      * The method will validate the token and update the security context if the token is valid.
      *
-     * @return true if the authentication is successful, false otherwise.
      */
     public JwtAuthOrchestrator orchestrate() {
         log.info("Validating token for type: {}", type.name());
@@ -116,74 +100,13 @@ public class JwtAuthOrchestrator {
     }
 
     /**
-     * Updates the security context with the username and role. <br>
-     */
-    private void updateSecurityContext() {
-        log.debug("Updating security context with username: {}", username);
-
-        var authorities = Collections.singletonList(new SimpleGrantedAuthority(role));
-        var authToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
-        authToken.setDetails(request);
-
-        SecurityContextHolder.getContext().setAuthentication(authToken);
-        log.debug("Security context updated successfully.");
-    }
-
-    /**
-     * Throws an exception if the authentication is not successful. <br>
+     * Authenticates the token and throws an exception if the token is invalid. <br>
      *
-     * @param exceptionSupplier a Supplier that returns a RuntimeException type object. <br>
+     * @param type the type of token to be validated. <br>
+     * @throws InvalidJwtException if the token is invalid. <br>
      */
-    public void throwIfUnauthenticated(Supplier<? extends RuntimeException> exceptionSupplier) {
-        if (!isValid) {
-            throw exceptionSupplier.get();
-        }
-    }
-
-    private FailedAuthResponse failedAuthResponse;
-
-    /**
-     * Sets the failed authentication response. <br>
-     *
-     * @param FailedAuthResponseSupplier a Supplier that returns a FailedAuthResponse object. <br>
-     * @return this instance to further configure the authentication process.
-     */
-    public JwtAuthOrchestrator handleUnauthenticated(Supplier<FailedAuthResponse> FailedAuthResponseSupplier) {
-        if (!isValid) {
-            this.failedAuthResponse = FailedAuthResponseSupplier.get();
-        }
-        return this;
-    }
-
-    /**
-     * Sets the failed authentication response and responds. <br>
-     *
-     * @param response the HttpServletResponse object to respond to.
-     * @throws IOException if an I/O error occurs during the response writing. <br>
-     */
-    public void with(HttpServletResponse response) throws IOException {
-        if (failedAuthResponse != null) {
-            response.setStatus(failedAuthResponse.getStatus());
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            new ObjectMapper().writeValue(response.getOutputStream(), this.constructResponseMap());
-        }
-    }
-
-    /**
-     * Constructs a Map object using the {@link FailedAuthResponse} instance. <br>
-     * ensures only valid data is included in the response map.
-     *
-     * @return a Map object containing the failed authentication response. <br>
-     */
-    private Map<String, Object> constructResponseMap() {
-        Map<String, Object> responseMap = new HashMap<>();
-
-        if (failedAuthResponse.getStatus() >= 400) responseMap.put("status", failedAuthResponse.getStatus());
-        if (failedAuthResponse.getMessage() != null) responseMap.put("message", failedAuthResponse.getMessage());
-        if (failedAuthResponse.getError() != null) responseMap.put("error", failedAuthResponse.getError());
-        if (failedAuthResponse.getAdditionalInfo() != null)
-            responseMap.put("additionalInfo", failedAuthResponse.getAdditionalInfo());
-        return responseMap;
+    public void authenticateOrThrow(TokenType type) {
+        this.forTokenType(type).orchestrate()
+                .throwIfUnauthenticated(() -> new InvalidJwtException("Authentication Failed."));
     }
 }
