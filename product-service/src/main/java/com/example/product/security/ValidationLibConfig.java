@@ -1,14 +1,14 @@
 package com.example.product.security;
 
-import com.example.jwt.validator.contracts.TokenLocatorService;
-import com.example.jwt.validator.secret.PublicKeyMetaData;
-import com.example.jwt.validator.util.CacheName;
+import com.rajugowda.jwt.validator.contracts.TokenLocatorService;
+import com.rajugowda.jwt.validator.secret.PublicKeyMetaData;
+import com.rajugowda.jwt.validator.util.CacheName;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ValidationLibBeans {
+public class ValidationLibConfig {
 
     @Bean
     TokenLocatorService tokenLocatorService(CacheManager cacheManager) {

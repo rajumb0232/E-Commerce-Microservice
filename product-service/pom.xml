@@ -54,9 +54,8 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
-		<!-- Security & Authentication Dependencies -->
 		<dependency>
-			<groupId>com.example</groupId>
+			<groupId>com.rajugowda</groupId>
 			<artifactId>shared-token-validation-lib</artifactId>
 			<version>1.0.0</version>
 		</dependency>

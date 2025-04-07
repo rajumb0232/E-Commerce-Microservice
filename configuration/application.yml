@@ -2,6 +2,7 @@ server:
   port: 0
 
 spring:
+
   # DATASOURCE CONFIGURATION
   datasource:
     url: ${DB_URL}
@@ -15,6 +16,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
   # SERVICE DISCOVERY CONFIGURATION (CONSUL)
   cloud:
     consul:
@@ -23,6 +25,12 @@ spring:
       discovery:
         instance-id: "${spring.application.name}:${server.port}"
         prefer-ip-address: true
+
+  # DISABLING DEFAULT SECURITY
+  security:
+    user:
+      name: none
+      password: none
 
 # ACTUATOR CONFIGURATION (ACTUATOR)
 management:
