@@ -2,6 +2,8 @@ package com.example.user.security.jwt;
 
 import com.example.user.security.jwt.secret.SecretManager;
 import com.example.user.security.jwt.secret.Vault;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -36,6 +38,11 @@ public class TokenParser {
         }
     }
 
+    /**
+     * Extracts the public key id from the JWT header.
+     * @param token the JWT token to parse.
+     * @return the extracted public key id.
+     */
     private String getPublicKeyId(String token) {
         // Split the token into its parts: header, payload, and signature
         String[] tokenParts = token.split("\\.");
@@ -48,19 +55,30 @@ public class TokenParser {
         String headerJson = new String(decodedBytes, StandardCharsets.UTF_8);
 
         try {
-            // Parse JSON into a Map
-            ObjectMapper mapper = new ObjectMapper();
-            Map headerMap = mapper.readValue(headerJson, Map.class);
-
-            // Extract the public key id (adjust key name as needed)
-            String publicKeyId = (String) headerMap.get(JwtStatics.PUB_KEY_ID);
-            if (publicKeyId == null || publicKeyId.isEmpty()) {
-                throw new RuntimeException("Public Key ID not found in token header");
-            }
-            log.info("Public Key ID extracted: {}", publicKeyId);
-            return publicKeyId;
+            return extractPublicKey(headerJson);
         } catch (Exception e) {
             throw new RuntimeException("Error parsing token header", e);
         }
+    }
+
+    /**
+     * Extracts the public key id from the JWT header.
+     * @param headerJson the JSON representation of the JWT header.
+     * @return the extracted public key id.
+     * @throws JsonProcessingException if the JSON parsing fails.
+     */
+    private String extractPublicKey(String headerJson) throws JsonProcessingException {
+        // Parse JSON into a Map
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> headerMap = mapper.readValue(headerJson, new TypeReference<>() {});
+
+        // Extract the public key id (adjust key name as needed)
+        String publicKeyId = (String) headerMap.get(JwtStatics.PUB_KEY_ID);
+        if (publicKeyId == null || publicKeyId.isBlank()) {
+            throw new RuntimeException("Public Key ID not found in token header");
+        }
+
+        log.info("Public Key ID extracted: {}", publicKeyId);
+        return publicKeyId;
     }
 }

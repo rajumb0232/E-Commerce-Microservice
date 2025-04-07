@@ -6,5 +6,5 @@ public class JwtStatics {
     public static final String EMAIL = "email";
     public static final String ROLE = "role";
 
-    public static final String PUB_KEY_ID = "pubKeyId";
+    public static final String PUB_KEY_ID = "pubkid";
 }
