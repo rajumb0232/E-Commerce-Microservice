@@ -1,8 +1,8 @@
-package com.example.jwt.validator.filters;
+package com.rajugowda.jwt.validator.filters;
 
-import com.example.jwt.validator.auth.Authenticator;
-import com.example.jwt.validator.auth.FailedAuthResponse;
-import com.example.jwt.validator.util.TokenType;
+import com.rajugowda.jwt.validator.auth.Authenticator;
+import com.rajugowda.jwt.validator.auth.FailedAuthResponse;
+import com.rajugowda.jwt.validator.util.TokenType;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

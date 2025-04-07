@@ -1,7 +1,7 @@
-package com.example.jwt.validator.filters;
+package com.rajugowda.jwt.validator.filters;
 
-import com.example.jwt.validator.auth.Authenticator;
-import com.example.jwt.validator.util.TokenType;
+import com.rajugowda.jwt.validator.auth.Authenticator;
+import com.rajugowda.jwt.validator.util.TokenType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

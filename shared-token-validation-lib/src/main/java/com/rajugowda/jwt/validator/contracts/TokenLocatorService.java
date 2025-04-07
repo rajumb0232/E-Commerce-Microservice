@@ -1,6 +1,6 @@
-package com.example.jwt.validator.contracts;
+package com.rajugowda.jwt.validator.contracts;
 
-import com.example.jwt.validator.secret.PublicKeyMetaData;
+import com.rajugowda.jwt.validator.secret.PublicKeyMetaData;
 
 /**
  * Abstract class for locating public key metadata based on a key ID.

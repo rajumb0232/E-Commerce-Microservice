@@ -1,4 +1,4 @@
-package com.example.jwt.validator.util;
+package com.rajugowda.jwt.validator.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

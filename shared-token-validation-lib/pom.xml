@@ -10,7 +10,7 @@
 		<relativePath/>
 	</parent>
 
-	<groupId>com.example</groupId>
+	<groupId>com.rajugowda</groupId>
 	<artifactId>shared-token-validation-lib</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>

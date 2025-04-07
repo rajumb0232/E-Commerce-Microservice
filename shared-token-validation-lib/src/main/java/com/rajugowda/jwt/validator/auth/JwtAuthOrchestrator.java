@@ -1,8 +1,8 @@
-package com.example.jwt.validator.auth;
+package com.rajugowda.jwt.validator.auth;
 
-import com.example.jwt.validator.exceptions.InvalidJwtException;
-import com.example.jwt.validator.util.ClaimNames;
-import com.example.jwt.validator.util.TokenType;
+import com.rajugowda.jwt.validator.exceptions.InvalidJwtException;
+import com.rajugowda.jwt.validator.util.ClaimNames;
+import com.rajugowda.jwt.validator.util.TokenType;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package com.example.jwt.validator.auth;
+package com.rajugowda.jwt.validator.auth;
 
 
 import lombok.*;
