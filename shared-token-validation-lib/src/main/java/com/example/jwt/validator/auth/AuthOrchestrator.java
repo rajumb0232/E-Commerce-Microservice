@@ -1,6 +1,5 @@
 package com.example.jwt.validator.auth;
 
-import com.example.jwt.validator.util.TokenType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

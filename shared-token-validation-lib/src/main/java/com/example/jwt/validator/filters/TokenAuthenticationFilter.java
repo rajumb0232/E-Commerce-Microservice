@@ -8,27 +8,34 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
 @AllArgsConstructor
+@Builder
 @Slf4j
-public class AccessTokenValidationFilter extends OncePerRequestFilter {
+public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final Authenticator authenticator;
+    private final TokenType authenticateTokenType;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         authenticator.authenticateForJwt(request)
-                .forTokenType(TokenType.ACCESS)
+                .forTokenType(authenticateTokenType)
                 .orchestrate()
                 .handleUnauthenticated(() -> FailedAuthResponse.builder()
                         .status(HttpServletResponse.SC_UNAUTHORIZED)
                         .message("Authentication Failed.")
-                        .error("Invalid access token.")
-                        .additionalInfo("Please provide a valid access token.")
+                        .error(
+                                authenticateTokenType.equals(TokenType.ACCESS)
+                                        ? "Invalid access token."
+                                        : "Invalid refresh token."
+                        )
+                        .additionalInfo("Please provide a valid token.")
                         .build())
                 .with(response);
 
