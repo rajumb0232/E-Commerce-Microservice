@@ -59,7 +59,7 @@ public class Vault {
      */
     private PublicKey addNewToPool(String keyId, PublicKeyMetaData metaData) {
         try {
-            PublicKey publicKey = decodePublicKey(keyId);
+            PublicKey publicKey = decodePublicKey(metaData.getPublicKey());
             addPublicKey(keyId, publicKey);
             return publicKey;
 
