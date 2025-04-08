@@ -32,7 +32,7 @@ public class SecurityBeans {
 
     @Bean
     PublicKeysPoolService publicKeysPoolService() {
-        var cache = cacheManager.getCache((String) CacheName.PUBLIC_KEY_POOL);
+        var cache = cacheManager.getCache(CacheName.PUBLIC_KEY_POOL);
 
         if(cache != null) {
             log.info("Cache found with name: {}", cache.getName());

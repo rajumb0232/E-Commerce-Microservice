@@ -62,7 +62,7 @@ public class SecretManager {
                 .publicKey(publicKeyString)
                 .build();
 
-        Cache cache = cacheManager.getCache((String) CacheName.PUBLIC_KEY_POOL);
+        Cache cache = cacheManager.getCache(CacheName.PUBLIC_KEY_POOL);
         if (cache != null) {
             cache.put(keyId, publicKeyMetaData);
             log.info("New Public Key published successfully.");

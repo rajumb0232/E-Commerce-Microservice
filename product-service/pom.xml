@@ -58,7 +58,7 @@
 		<dependency>
 			<groupId>com.rajugowda</groupId>
 			<artifactId>shared-token-validation-lib</artifactId>
-			<version>1.0.3 (SNAPSHOT)</version>
+			<version>1.0.0</version>
 		</dependency>
 
 		<!-- Cache Dependencies -->
