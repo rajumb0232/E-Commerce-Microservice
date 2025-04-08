@@ -1,8 +1,8 @@
 package com.rajugowda.jwt.validator.secret;
 
+import com.rajugowda.jwt.validator.contracts.PublicKeysPoolService;
 import com.rajugowda.jwt.validator.exceptions.InvalidPublicKeyException;
 import com.rajugowda.jwt.validator.exceptions.InvalidPublicKeyMetaDataException;
-import com.rajugowda.jwt.validator.contracts.TokenLocatorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -17,11 +17,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class Vault {
 
-    private final TokenLocatorService tokenLocatorService;
+    private final PublicKeysPoolService publicKeysPoolService;
     private final Map<String, PublicKey> publicKeyPool = new ConcurrentHashMap<>();
 
-    public Vault(TokenLocatorService tokenLocatorService) {
-        this.tokenLocatorService = tokenLocatorService;
+    public Vault(PublicKeysPoolService publicKeysPoolService) {
+        this.publicKeysPoolService = publicKeysPoolService;
     }
 
     /**
@@ -36,7 +36,7 @@ public class Vault {
         if (publicKey == null) {
 
             log.debug("Public keyId not found in pool; attempting to decode and register from metadata.");
-            var metaData = tokenLocatorService.loadPublicKeyMetaData(keyId);
+            var metaData = publicKeysPoolService.loadPublicKeyMetaData(keyId);
 
             if (metaData != null && metaData.getId() != null && metaData.getPublicKey() != null) {
                 publicKey = addNewToPool(metaData);
