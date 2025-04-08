@@ -9,5 +9,5 @@ public enum TokenType {
     ACCESS("at"),
     REFRESH("rt");
 
-    private final String name;
+    private final String type;
 }

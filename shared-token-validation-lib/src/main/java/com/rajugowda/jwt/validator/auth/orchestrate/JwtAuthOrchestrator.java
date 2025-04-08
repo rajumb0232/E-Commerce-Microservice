@@ -81,7 +81,7 @@ public class JwtAuthOrchestrator extends AuthOrchestrator {
         String token = extractToken(request.getCookies(), type);
 
         if (token != null && !token.isEmpty()) {
-            log.info("Validating token for type: {}", type.name());
+            log.info("Validating token for type: {}", type.getType());
             this.validateAndInitClaims(token);
         } else {
             log.warn("Token not found in request.");
@@ -114,9 +114,9 @@ public class JwtAuthOrchestrator extends AuthOrchestrator {
 
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals(tokenType.name())) {
-                log.debug("Found token for type: {}", type.name());
+                log.debug("Found token for type: {}", type.getType());
                 return cookie.getValue();
-            } else log.debug("No token found for type: {}", type.name());
+            } else log.debug("No token found for type: {}", type.getType());
         }
 
         return null;

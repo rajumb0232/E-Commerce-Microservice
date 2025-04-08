@@ -12,11 +12,17 @@
 
 	<groupId>com.rajugowda</groupId>
 	<artifactId>shared-token-validation-lib</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	<packaging>jar</packaging>
 
 	<name>shared-token-validation-lib</name>
-	<description>Shared library for JWT validation.</description>
+
+	<description>
+		A shared JWT token validation library built for the E-Commerce microservices architecture.
+		It provides pluggable and configurable filters for access and refresh token authentication using Spring Security.
+		Note: This library does not issue tokens. To successfully validate requests, certain token structure and claim standards must be followed.
+	</description>
+
 	<url>https://github.com/rajumb0232/E-Commerce-Microservice</url>
 
 	<licenses>
