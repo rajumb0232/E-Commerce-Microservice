@@ -130,7 +130,7 @@ public class JwtAuthOrchestrator extends AuthOrchestrator {
                 role = claims.get(ClaimNames.ROLE, String.class);
 
                 isValid = (username != null && !username.isBlank()) && (role != null && !role.isBlank());
-                log.debug("Token validated successfully. Username: {}, Role: {}", username, role);
+                log.info("Token validated successfully. Username: {}, Role: {}", username, role);
             } catch (Exception e) {
                 log.error("Failed to validate token", e);
                 isValid = false;
