@@ -1,7 +1,10 @@
 package com.example.product.security;
 
 import com.rajugowda.jwt.validator.filters.FilterFactory;
+import com.rajugowda.jwt.validator.filters.JwtAuthFilter;
+import com.rajugowda.jwt.validator.util.TokenType;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -33,10 +36,7 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .securityMatcher("/actuator/**")
-
-                .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll())
-
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
@@ -44,23 +44,21 @@ public class SecurityConfig {
 
     @Bean
     @Order(2)
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http, @Qualifier("jwtAuthAccessFilter") JwtAuthFilter jwtAuthAccessFilter) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
 
-                .securityMatcher("/api/**")
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/api/**")
-                        .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                         .anyRequest().authenticated())
 
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                .addFilterBefore(filterFactory.getAccessTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-
+                .addFilterBefore(
+                        filterFactory.createJwtFilter(JwtAuthFilter.class, TokenType.ACCESS),
+                        UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-
 
 }

@@ -14,12 +14,17 @@ import java.time.Duration;
 @Configuration
 public class CacheConfig {
 
+    private RedisSerializationContext.SerializationPair<Object> serializer;
+
+    {
+        serializer = RedisSerializationContext.SerializationPair.fromSerializer(
+                new GenericJackson2JsonRedisSerializer());
+    }
+
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
         var config = RedisCacheConfiguration.defaultCacheConfig()
-                .serializeValuesWith(
-                        RedisSerializationContext.SerializationPair.fromSerializer(
-                                new GenericJackson2JsonRedisSerializer()))
+                .serializeValuesWith(serializer)
                 .entryTtl(Duration.ofMinutes(10))
                 .disableCachingNullValues();
 
