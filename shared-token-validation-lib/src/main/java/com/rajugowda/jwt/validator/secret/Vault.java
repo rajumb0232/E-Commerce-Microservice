@@ -39,7 +39,7 @@ public class Vault {
             var metaData = publicKeysPoolService.loadPublicKeyMetaData(keyId);
 
             if (metaData != null && metaData.getId() != null && metaData.getPublicKey() != null) {
-                publicKey = addNewToPool(metaData);
+                publicKey = addNewToPool(keyId, metaData);
                 log.info("New PublicKey registered successfully.");
             } else {
                 log.warn("PublicKey MetaData invalid or not found; failed to register new public keyId.");
@@ -52,21 +52,20 @@ public class Vault {
     }
 
     /**
-     * Registers a new public key with the specified key ID in the Vault.
+     * Registers a new public keyId with the specified keyId ID in the Vault.
      *
-     * @param metaData the metadata of the public key to be registered.
+     * @param metaData the metadata of the public keyId to be registered.
      * @return the PublicKey object if registered successfully, otherwise null
      */
-    private PublicKey addNewToPool(PublicKeyMetaData metaData) {
+    private PublicKey addNewToPool(String keyId, PublicKeyMetaData metaData) {
         try {
-            var key = metaData.getPublicKey();
-            PublicKey publicKey = decodePublicKey(key);
-            addPublicKey(key, publicKey);
+            PublicKey publicKey = decodePublicKey(keyId);
+            addPublicKey(keyId, publicKey);
             return publicKey;
 
         } catch (Exception e) {
-            log.error("Failed to decode public key with id: {}", metaData.getId());
-            throw new InvalidPublicKeyException("Failed to register new public key.", e);
+            log.error("Failed to decode public keyId with id: {}", metaData.getId());
+            throw new InvalidPublicKeyException("Failed to register new public keyId.", e);
         }
     }
 
@@ -84,13 +83,13 @@ public class Vault {
     }
 
     /**
-     * Registers a new public key with the specified key ID in the Vault.
+     * Registers a new public keyId with the specified keyId ID in the Vault.
      *
-     * @param key       a unique identifier for the public key.
-     * @param publicKey the public key to be registered.
+     * @param keyId       a unique identifier for the public keyId.
+     * @param publicKey the public keyId to be registered.
      */
-    private void addPublicKey(String key, PublicKey publicKey) {
-        log.info("Registering new public key with ID: {}", key);
-        publicKeyPool.put(key, publicKey);
+    private void addPublicKey(String keyId, PublicKey publicKey) {
+        log.info("Registering new public keyId with ID: {}", keyId);
+        publicKeyPool.put(keyId, publicKey);
     }
 }
