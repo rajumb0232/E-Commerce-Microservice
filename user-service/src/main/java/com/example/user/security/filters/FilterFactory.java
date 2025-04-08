@@ -3,7 +3,7 @@ package com.example.user.security.filters;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 @AllArgsConstructor
 public class FilterFactory {
 

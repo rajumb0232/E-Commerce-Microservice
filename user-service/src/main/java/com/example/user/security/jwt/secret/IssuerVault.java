@@ -16,10 +16,15 @@ import java.util.concurrent.ConcurrentHashMap;
 public class IssuerVault {
     private PrivateKey privateKey;
     private String currentPublicKeyId;
+    private final Map<String, PublicKey> publicKeyPool = new ConcurrentHashMap<>();
 
     public void setNewPrivateKey(PrivateKey privateKey, String correspondingPublicKeyId) {
         this.privateKey = privateKey;
         this.currentPublicKeyId = correspondingPublicKeyId;
+    }
+
+    public void currentPublicKeyIdentifier(String keyId) {
+        this.currentPublicKeyId = keyId;
     }
 }
 

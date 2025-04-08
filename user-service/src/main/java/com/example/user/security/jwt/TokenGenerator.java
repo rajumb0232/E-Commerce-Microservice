@@ -1,14 +1,13 @@
 package com.example.user.security.jwt;
 
-import com.example.user.security.jwt.secret.Vault;
+import com.example.user.security.jwt.secret.IssuerVault;
+import com.rajugowda.jwt.validator.util.ClaimNames;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.security.PrivateKey;
 import java.util.Date;
 import java.util.Map;
 
@@ -23,7 +22,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class TokenGenerator {
 
-    private final Vault vault;
+    private final IssuerVault issuerVault;
 
     /**
      * Generates a JWT token with the specified claims and validity duration.
@@ -37,11 +36,11 @@ public class TokenGenerator {
     public String generateToken(Map<String, Object> claims, Date issuedAt, Date expiration) {
         try {
             String token = Jwts.builder()
-                    .setHeaderParam(JwtStatics.PUB_KEY_ID, vault.getCurrentPublicKeyId())
+                    .setHeaderParam(ClaimNames.PUB_KEY_ID, issuerVault.getCurrentPublicKeyId())
                     .setClaims(claims)
                     .setIssuedAt(issuedAt)
                     .setExpiration(expiration)
-                    .signWith(vault.getPrivateKey(), SignatureAlgorithm.RS256)
+                    .signWith(issuerVault.getPrivateKey(), SignatureAlgorithm.RS256)
                     .compact();
             log.info("Token generated successfully");
             return token;

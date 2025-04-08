@@ -1,7 +1,9 @@
 package com.example.user.security.config;
 
-import com.example.user.security.filters.FilterFactory;
 import com.example.user.shared.config.Env;
+import com.rajugowda.jwt.validator.filters.FilterFactory;
+import com.rajugowda.jwt.validator.filters.JwtAuthFilter;
+import com.rajugowda.jwt.validator.util.TokenType;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,11 +39,12 @@ public class SecurityConfig {
                         .requestMatchers(
                                 env.getBaseUrl() + "/login",
                                 env.getBaseUrl() + "/register",
-                                "/actuator/**")
-                        .permitAll()
+                                "/actuator/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(filterFactory.getAuthFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(
+                        filterFactory.createJwtFilter(JwtAuthFilter.class, TokenType.ACCESS),
+                        UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }

@@ -14,7 +14,7 @@ public class ValidationLibConfig {
 
     @Bean
     PublicKeysPoolService tokenLocatorService(CacheManager cacheManager) {
-        var cache = cacheManager.getCache("public-keys-pool");
+        var cache = cacheManager.getCache((String) CacheName.PUBLIC_KEYS_POOL);
 
         return keyId -> {
             if (cache == null) {
@@ -24,7 +24,6 @@ public class ValidationLibConfig {
 
             log.info("Cache found for name: {}", CacheName.PUBLIC_KEYS_POOL);
 
-            // Let Spring handle key prefixing — don't add "public-keys-pool::" manually
             var publicKeyMetaData = cache.get(keyId, PublicKeyMetaData.class);
 
             if (publicKeyMetaData != null) {

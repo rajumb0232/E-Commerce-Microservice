@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
 
 import java.time.Duration;
 import java.util.List;
@@ -15,17 +17,29 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Configuration
-@AllArgsConstructor
 @Slf4j
 public class CacheConfig {
 
     private final CacheRequirements cacheRequirements;
     private final List<ComplexCacheRequirement> complexCacheRequirements;
 
+    private final RedisSerializationContext.SerializationPair<Object> serializer;
+
+    public CacheConfig(CacheRequirements cacheRequirements, List<ComplexCacheRequirement> complexCacheRequirements) {
+        this.cacheRequirements = cacheRequirements;
+        this.complexCacheRequirements = complexCacheRequirements;
+    }
+
+    {
+        serializer = RedisSerializationContext.SerializationPair.fromSerializer(
+                new GenericJackson2JsonRedisSerializer());
+    }
+
+
     @Bean
     CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
-
         var defaultConfiguration = RedisCacheConfiguration.defaultCacheConfig()
+                .serializeValuesWith(serializer)
                 .entryTtl(Duration.ofMinutes(10))
                 .disableCachingNullValues();
 
@@ -53,6 +67,7 @@ public class CacheConfig {
     private RedisCacheConfiguration generateCacheConfiguration(String cacheName, Long ttlMinute) {
         log.info("Generating cache: {}", cacheName);
         return RedisCacheConfiguration.defaultCacheConfig()
+                .serializeValuesWith(serializer)
                 .entryTtl(Duration.ofMinutes(ttlMinute))
                 .disableCachingNullValues();
     }

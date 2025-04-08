@@ -2,7 +2,8 @@ package com.example.user.security.jwt.secret;
 
 import java.security.*;
 
-import com.example.user.infrastructure.cache.CacheName;
+import com.rajugowda.jwt.validator.secret.PublicKeyMetaData;
+import com.rajugowda.jwt.validator.util.CacheName;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.Cache;
@@ -10,7 +11,6 @@ import org.springframework.cache.CacheManager;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.UUID;
 
@@ -19,12 +19,12 @@ import java.util.UUID;
 @AllArgsConstructor
 public class SecretManager {
 
-    private final Vault vault;
+    private final IssuerVault issuerVault;
     private final CacheManager cacheManager;
 
     /**
-     * Scheduled method that generates a new RSA key pair, updates the Vault with the new private key,
-     * publishes the public key to a cache, and adds it to the Vault's public key pool for subsequent retrieval.
+     * Scheduled method that generates a new RSA key pair, updates the IssuerVault with the new private key,
+     * publishes the public key to a cache, and adds it to the IssuerVault's public key pool for subsequent retrieval.
      *
      * @throws Exception if the key generation or publishing process encounters an error
      */
@@ -41,8 +41,8 @@ public class SecretManager {
         publishPublicKey(key, publicKeyString);
 
         // Store the public key along with the key id in the publicKeyPool.
-        vault.setNewPrivateKey(keyPair.getPrivate(), key);
-        vault.addPublicKey(key, publicKey);
+        issuerVault.setNewPrivateKey(keyPair.getPrivate(), key);
+        issuerVault.currentPublicKeyIdentifier(key);
     }
 
     /**
@@ -62,7 +62,7 @@ public class SecretManager {
                 .publicKey(publicKeyString)
                 .build();
 
-        Cache cache = cacheManager.getCache(CacheName.PUBLIC_KEYS_POOL);
+        Cache cache = cacheManager.getCache((String) CacheName.PUBLIC_KEYS_POOL);
         if (cache != null) {
             cache.put(keyId, publicKeyMetaData);
             log.info("New Public Key published successfully.");
@@ -94,61 +94,4 @@ public class SecretManager {
         return Base64.getEncoder().encodeToString(publicKey.getEncoded());
     }
 
-    /**
-     * Retrieves the public key associated with the specified key ID from the Vault.
-     * If the key is not found in the Vault, it attempts to load the key from the PUBLIC_KEYS_POOL cache.
-     * Decoded keys are then cached back into the Vault for faster lookups.
-     *
-     * @param key a unique identifier for the public key
-     * @return the PublicKey object if found, otherwise null
-     */
-    public PublicKey getPublicKey(String key) {
-        var publicKey = vault.getPublicKey(key);
-        if (publicKey == null) {
-            // Not found in pool, trying to load the public key from the cache.
-            var publicKeyMetaData = getFromCache(key);
-            if (publicKeyMetaData != null) {
-                try {
-                    publicKey = decodePublicKey(publicKeyMetaData.getPublicKey());
-                    // Adding the public key to the vault.
-                    vault.addPublicKey(key, publicKey);
-                    return publicKey;
-                } catch (Exception e) {
-                    log.error("Failed to decode public key with id: {}", key, e);
-                }
-            }
-        }
-        return publicKey;
-    }
-
-    /**
-     * Searches for and returns the PublicKeyMetaData object from the PUBLIC_KEYS_POOL cache
-     * corresponding to the specified key ID.
-     *
-     * @param key the unique identifier used to look up metadata in the cache
-     * @return a PublicKeyMetaData instance if found, or null if not found or cache is unavailable
-     */
-    private PublicKeyMetaData getFromCache(String key) {
-        var cache = cacheManager.getCache(CacheName.PUBLIC_KEYS_POOL);
-
-        if (cache != null) {
-            return cache.get(key, PublicKeyMetaData.class);
-        } else {
-            log.error("Failed to load Public Key, Cache: {} not found.", CacheName.PUBLIC_KEYS_POOL);
-        }
-        return null;
-    }
-
-    /**
-     * Decodes a Base64-encoded string representing an RSA public key into a PublicKey object.
-     *
-     * @param publicKeyString the Base64-encoded public key to decode
-     * @return the corresponding RSA PublicKey object
-     * @throws Exception if decoding fails or if the RSA KeyFactory cannot be instantiated
-     */
-    private static PublicKey decodePublicKey(String publicKeyString) throws Exception {
-        byte[] keyBytes = Base64.getDecoder().decode(publicKeyString);
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-        return keyFactory.generatePublic(new X509EncodedKeySpec(keyBytes));
-    }
 }

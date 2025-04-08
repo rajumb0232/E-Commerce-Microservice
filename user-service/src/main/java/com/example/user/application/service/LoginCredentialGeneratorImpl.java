@@ -3,9 +3,9 @@ package com.example.user.application.service;
 import com.example.user.application.service.contracts.LoginCredentialGenerator;
 import com.example.user.application.dto.AuthRecord;
 import com.example.user.security.jwt.ClaimGen;
-import com.example.user.security.jwt.JwtStatics;
 import com.example.user.security.jwt.TokenType;
 import com.example.user.security.service.TokenGenerationServiceHelper;
+import com.rajugowda.jwt.validator.util.ClaimNames;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -69,9 +69,9 @@ public class LoginCredentialGeneratorImpl implements LoginCredentialGenerator {
      */
     private Map<String, Object> buildClaims(final String username, final String email, final String role) {
         return ClaimGen.builder()
-                .addClaim(JwtStatics.USERNAME, username)
-                .addClaim(JwtStatics.EMAIL, email)
-                .addClaim(JwtStatics.ROLE, role)
+                .addClaim(ClaimNames.USERNAME, username)
+                .addClaim(ClaimNames.EMAIL, email)
+                .addClaim(ClaimNames.ROLE, role)
                 .build();
     }
 
