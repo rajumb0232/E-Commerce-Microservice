@@ -1,6 +1,6 @@
 #  APP CONFIGURATION (INTERNAL)
 app:
-  base-url: /api/v1/products
+  base-url: /api/v1/orders
   client:
     product:
       name: product-service
