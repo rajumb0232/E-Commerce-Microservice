@@ -5,7 +5,6 @@ import com.rajugowda.jwt.validator.secret.PublicKeyMetaData;
 import com.rajugowda.jwt.validator.util.CacheName;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +32,7 @@ public class SecurityBeans {
 
     @Bean
     PublicKeysPoolService publicKeysPoolService() {
-        var cache = cacheManager.getCache((String) CacheName.PUBLIC_KEYS_POOL);
+        var cache = cacheManager.getCache((String) CacheName.PUBLIC_KEY_POOL);
 
         if(cache != null) {
             log.info("Cache found with name: {}", cache.getName());
@@ -41,12 +40,12 @@ public class SecurityBeans {
             return keyId -> {
                 var metaData = cache.get(keyId, PublicKeyMetaData.class);
                 if(metaData != null) {
-                    log.info("public key found in cache: {}, with Id: {}", CacheName.PUBLIC_KEYS_POOL, keyId);
-                } else log.error("public key not found in cache: {}, with Id: {}", CacheName.PUBLIC_KEYS_POOL, keyId);
+                    log.info("public key found in cache: {}, with Id: {}", CacheName.PUBLIC_KEY_POOL, keyId);
+                } else log.error("public key not found in cache: {}, with Id: {}", CacheName.PUBLIC_KEY_POOL, keyId);
 
                 return metaData;
             };
-        } else log.error("Cache not found with name: {}", CacheName.PUBLIC_KEYS_POOL);
+        } else log.error("Cache not found with name: {}", CacheName.PUBLIC_KEY_POOL);
 
         return null;
     }

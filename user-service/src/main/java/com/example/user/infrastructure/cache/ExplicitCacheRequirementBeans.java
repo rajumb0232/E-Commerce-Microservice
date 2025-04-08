@@ -16,7 +16,7 @@ public class ExplicitCacheRequirementBeans {
         Long secretRotateInterval = env.getSecurity().getSecretRotateIntervalMillis();
         Long ttlMinutes = greaterExpiration + secretRotateInterval;
         return ComplexCacheRequirement.builder()
-                .cacheName((String) CacheName.PUBLIC_KEYS_POOL)
+                .cacheName((String) CacheName.PUBLIC_KEY_POOL)
                 .ttlMinutes(ttlMinutes)
                 .build();
     }

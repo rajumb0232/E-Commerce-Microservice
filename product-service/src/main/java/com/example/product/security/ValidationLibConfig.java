@@ -14,15 +14,15 @@ public class ValidationLibConfig {
 
     @Bean
     PublicKeysPoolService tokenLocatorService(CacheManager cacheManager) {
-        var cache = cacheManager.getCache((String) CacheName.PUBLIC_KEYS_POOL);
+        var cache = cacheManager.getCache((String) CacheName.PUBLIC_KEY_POOL);
 
         return keyId -> {
             if (cache == null) {
-                log.warn("Cache not found for name: {}", CacheName.PUBLIC_KEYS_POOL);
+                log.warn("Cache not found for name: {}", CacheName.PUBLIC_KEY_POOL);
                 return null;
             }
 
-            log.info("Cache found for name: {}", CacheName.PUBLIC_KEYS_POOL);
+            log.info("Cache found for name: {}", CacheName.PUBLIC_KEY_POOL);
 
             var publicKeyMetaData = cache.get(keyId, PublicKeyMetaData.class);
 

@@ -46,7 +46,7 @@ public class SecretManager {
     }
 
     /**
-     * Publishes the given public key string (Base64-encoded) into the PUBLIC_KEYS_POOL cache
+     * Publishes the given public key string (Base64-encoded) into the PUBLIC_KEY_POOL cache
      * with an assigned key ID and the time at which it was generated.
      *
      * @param keyId           a unique identifier for the public key
@@ -62,13 +62,13 @@ public class SecretManager {
                 .publicKey(publicKeyString)
                 .build();
 
-        Cache cache = cacheManager.getCache((String) CacheName.PUBLIC_KEYS_POOL);
+        Cache cache = cacheManager.getCache((String) CacheName.PUBLIC_KEY_POOL);
         if (cache != null) {
             cache.put(keyId, publicKeyMetaData);
             log.info("New Public Key published successfully.");
         }
         else {
-            log.error("Failed to publish new Public Key, Cache: {} not found.", CacheName.PUBLIC_KEYS_POOL);
+            log.error("Failed to publish new Public Key, Cache: {} not found.", CacheName.PUBLIC_KEY_POOL);
         }
     }
 
