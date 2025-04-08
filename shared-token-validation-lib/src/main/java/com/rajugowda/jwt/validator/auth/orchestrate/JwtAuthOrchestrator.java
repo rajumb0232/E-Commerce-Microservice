@@ -36,14 +36,8 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class JwtAuthOrchestrator extends AuthOrchestrator {
-    /**
-     * The type of token to be validated (e.g., ACCESS or REFRESH).
-     */
-    private TokenType type;
 
-    /**
-     * The {@link TokenParser} used to parse and validate the JWT token.
-     */
+    private TokenType type;
     private final TokenParser parser;
 
     /**
@@ -81,7 +75,7 @@ public class JwtAuthOrchestrator extends AuthOrchestrator {
         String token = extractToken(request.getCookies(), type);
 
         if (token != null && !token.isEmpty()) {
-            log.info("Validating token for type: {}", type.getType());
+            log.info("Validating token for type: {}", type.getAbbreviation());
             this.validateAndInitClaims(token);
         } else {
             log.warn("Token not found in request.");
@@ -113,10 +107,10 @@ public class JwtAuthOrchestrator extends AuthOrchestrator {
         }
 
         for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(tokenType.name())) {
-                log.debug("Found token for type: {}", type.getType());
+            if (cookie.getName().equals(tokenType.getAbbreviation())) {
+                log.debug("Found token for type: {}", type.getAbbreviation());
                 return cookie.getValue();
-            } else log.debug("No token found for type: {}", type.getType());
+            } else log.debug("No token found for type: {}", type.getAbbreviation());
         }
 
         return null;

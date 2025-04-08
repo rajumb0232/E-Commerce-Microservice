@@ -41,19 +41,9 @@ import java.util.function.Supplier;
  */
 @Slf4j
 public class AuthOrchestrator {
-    /**
-     * The authenticated user’s name, determined after successfully validating credentials.
-     */
+
     protected String username;
-
-    /**
-     * The role granted to the authenticated user, determined after successful validation.
-     */
     protected String role;
-
-    /**
-     * Indicates whether the authentication attempt was successful.
-     */
     protected boolean isValid;
 
     /**
