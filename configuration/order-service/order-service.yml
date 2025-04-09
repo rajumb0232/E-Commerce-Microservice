@@ -1,6 +1,6 @@
 #  APP CONFIGURATION (INTERNAL)
 app:
-  base-url: /api/v1/orders
+  base-url: /api/v1
   integration:
     product-service:
       api-prefix: /api/v1/products
