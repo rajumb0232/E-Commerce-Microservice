@@ -78,7 +78,7 @@ public class CartServiceImpl implements CartService {
                 log.error("Product not found with id: {}", productId);
                 throw new RuntimeException("Product not found with id: " + productId);
             }
-            log.error("Failed to retrieve productId with id: {}", productId);
+            log.error("Failed to retrieve productId with id: {}, status: {}, message: {}", productId, e.status(), e.getMessage());
             throw new RuntimeException("Failed to retrieve productId with id: " + productId);
         }
         return product;

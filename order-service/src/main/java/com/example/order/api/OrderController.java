@@ -28,13 +28,13 @@ public class OrderController {
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("/order-items/{itemId}")
+    @PatchMapping("/orders/order-items/{itemId}")
     public ResponseEntity<OrderItemResponse> updateOrderStatus(@PathVariable Long itemId, @RequestParam OrderStatus orderStatus) {
         OrderItemResponse response = orderFacade.updateOrderStatus(itemId, orderStatus);
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/order-items/{itemId}")
+    @DeleteMapping("/orders/order-items/{itemId}")
     public ResponseEntity<OrderItemResponse> cancelOrder(@PathVariable Long itemId) {
         OrderItemResponse response = orderFacade.cancelOrder(itemId);
         return ResponseEntity.ok(response);
