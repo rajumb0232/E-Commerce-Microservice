@@ -1,9 +1,9 @@
 #  APP CONFIGURATION (INTERNAL)
 app:
   base-url: /api/v1/orders
-  client:
-    product:
-      name: product-service
+  integration:
+    product-service:
+      api-prefix: /api/v1/products
 
 spring:
   # Service Discovery configuration
@@ -11,4 +11,4 @@ spring:
     consul:
       discovery:
         metadata:
-          basePath: ${app.base-url}
+          basePath: /api/v1/orders;/api/v1/cart-items
